@@ -159,6 +159,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double val
         &GetDen_,
         &SetDen_,   
         &Modulo_,
+		&Simplifica_
      };
 
      me->Metodo = &interface;
@@ -529,4 +530,8 @@ static void destroi_ (Numero_t *  me)
 	free (((MeuRacional_pt) me)->valor);
 	/*... e só agora destroi-se o número virtual da classe base */
 	free ((Numero_t *) me);
+}
+ /*-----------------------------------------------------------------*/
+static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
+	
 }
