@@ -138,9 +138,9 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
 	 * da classe MeuRacional_t                                        */
 
     static struct NumeroVtbl const vtbl = {
-        &copia_, //ok
+        &copia_,   //ok
         &atribui_, //ok
-        &soma_, //ok  
+        &soma_,    //ok  
         &subt_,
         &mult_,
         &divd_,
@@ -170,8 +170,8 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &Atribui_,   // parece ok
         &Soma_,      // feita
         &Subt_,      // 
-        &Mult_,      //
-        &Divd_,		 //
+        &Mult_,      // 
+        &Divd_,		 // 
 		&Ac_Soma_,	 //
 		&Ac_Subt_,	 //
 		&Ac_Mult_,   //
@@ -186,7 +186,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &GetDen_,    // parece ok
         &SetDen_,    // parece ok
         &Modulo_,    // parece ok
-		&Simplifica_ //
+		&Simplifica_ // implementada
      };
 
      me->Metodo = &interface;
