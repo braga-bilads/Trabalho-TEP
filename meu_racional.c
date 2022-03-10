@@ -115,10 +115,10 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
 	 * da classe MeuRacional_t                                        */
 
     static struct NumeroVtbl const vtbl = {
-        &copia_,
-        &atribui_,
-        &soma_,
-        &subt_,
+        &copia_,  //ok
+        &atribui_, //ok
+        &soma_,  //ok  
+        &subt_, 
         &mult_,
         &divd_,
         0,
@@ -145,7 +145,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
      static struct MeuRacional_Interface_st const interface = {
         &Copia_,     // parece ok
         &Atribui_,   // parece ok
-        &Soma_,      //
+        &Soma_,      // feita
         &Subt_,      //
         &Mult_,      //
         &Divd_,      //  
@@ -293,14 +293,18 @@ MeuRacional_pt Soma_  ( MeuRacional_t const * const  me,
 }
 
 static  Numero_pt soma_  ( Numero_t const * const  me,
-								Numero_t const * const  outro,
-								Numero_t       * const  res)
+						   Numero_t const * const  outro,
+						   Numero_t       * const  res)
 {
-	Set_((MeuRacional_pt) res,
-				GetNum_((MeuRacional_pt) me) +
-				GetNum_((MeuRacional_pt) outro),
-				GetDen_((MeuRacional_pt) me) +
-				GetDen_((MeuRacional_pt) outro) );
+	long int den;
+	long int num;
+	long int mc;
+
+	mc = GetDen_(me) * GetDen_(outro);
+	den = mc;
+	num = (GetNum_(me)/mc) + (GetNum_(outro)/mc);
+
+	Set_(res, num, den);
 
 	return (Numero_pt) res;
 }
