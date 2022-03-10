@@ -48,7 +48,7 @@ static  void destroi_ (Numero_t   *   me);
 
 
 /*---------------------------------------------------------------------*
- * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MeuDouble*
+ * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MeuRacional*
  * -------------------------------------------------------------------*/
 static  MeuRacional_pt Copia_ (MeuRacional_t const * const  me);
 
@@ -121,10 +121,10 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double val
         &subt_,
         &mult_,
         &divd_,
-        0,      //essas funções com 0 não exitem para numeros racionais
-        0,      //por isso foram  excluidas
-        0,
-        0,
+        &ac_soma_,
+        &ac_subt_,
+        &ac_mult_,
+        &ac_divd_,
         &compara_,
         &imprime_,
         &destroi_
@@ -504,7 +504,8 @@ char * Imprime_  ( MeuRacional_t const * const  me)
 }
 static  char * imprime_  (Numero_t const * const  me)
 {
-    static char buffer[50];
+    char buffer[50];
+	buffer[0] = '\n';
     if (GetDen_((MeuRacional_pt) me) > 0.0)
 	{   sprintf(buffer, "%f + %f i",GetNum_((MeuRacional_pt) me),fabs(GetDen_((MeuRacional_pt) me)) );
 	}
@@ -533,5 +534,5 @@ static void destroi_ (Numero_t *  me)
 }
  /*-----------------------------------------------------------------*/
 static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
-	
+
 }

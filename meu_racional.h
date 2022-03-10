@@ -98,6 +98,7 @@ struct MeuRacional_Interface_st {
 
     double  (*modulo) (MeuRacional_t   const * const me);
 
+    MeuRacional_pt  (*simplifica) (MeuRacional_pt me);
     /*------------------------------------------------------*/
 };
 
