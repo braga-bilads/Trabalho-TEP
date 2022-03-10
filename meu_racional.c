@@ -203,8 +203,7 @@ void Get_ (MeuRacional_t  const * const me,
 }
 
 
-static inline
-void Set_ (MeuRacional_t       * const me,
+static inline void Set_ (MeuRacional_t       * const me,
 			double                valorNum,
 	        double 				  valorDen)
 {
@@ -213,56 +212,39 @@ void Set_ (MeuRacional_t       * const me,
 
 }
 
-static inline
-double GetNum_ (MeuRacional_t  const * const me)
+static inline double GetNum_ (MeuRacional_t  const * const me)
 {
 	 return ( (me->valor[0]));
 
 }
 
 
-static inline
-void SetNum_ (MeuRacional_t     * const me,
+static inline void SetNum_ (MeuRacional_t     * const me,
 			double                valorNum)
 {
 	me->valor[0] = valorNum;
 
 }
 
-static inline
-double  GetDen_ (MeuRacional_t  const * const me)
+static inline double  GetDen_ (MeuRacional_t  const * const me)
 {
 	 return (me->valor[1]);
 }
 
 
-static inline
-void SetDen_ (MeuRacional_t       * const me,
+static inline void SetDen_ (MeuRacional_t       * const me,
 	           double 				  valorDen)
 {
 	me->valor[1] = valorDen;
 }
 
-static
-MeuRacional_pt  (Conjugado_)  (MeuRacional_t   const * const me,
-	                      MeuRacional_t         * const conj)
-{
-	conj->valor[0] =   me->valor[0];
-	conj->valor[1] = - (me->valor[1]);
-	return (conj);
-}
 
-static
-double  Modulo_ (MeuRacional_t   const * const me)
+static double  Modulo_ (MeuRacional_t   const * const me)
 {
    return( sqrt(GetNum_(me)*(GetNum_(me)) + (GetDen_(me)*(GetDen_(me))  )));
 }
 
-static
-double Argumento_ (MeuRacional_t   const * const me)
-{
-    return (atan (GetDen_(me) / GetNum_(me) ));
-}
+
 /*------------------------------------------------------*
  * IMPLEMENTAÇÃO DAS FUNÇÕES VIRTUAIS           *
  * -----------------------------------------------------*/
@@ -432,41 +414,6 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 	 return ( (Numero_pt) res);
 }
 
-/*-----------------------------------------------------------------*/
-
-
-static  Numero_pt ac_soma_  (Numero_t       * const  me,
-                             Numero_t const * const  outro)
-{
-	
-}
-
-/*-----------------------------------------------------------------*/
-
-
-static  Numero_pt ac_subt_  (Numero_t       * const  me,
-								  Numero_t const * const  outro)
-{
-	;
-}
-
-/*-----------------------------------------------------------------*/
-
-
-static  Numero_pt ac_mult_  (Numero_t       * const  me,
-                             Numero_t const * const  outro)
-{
-	
-}
-
-/*-----------------------------------------------------------------*/
-
-
-static  Numero_pt ac_divd_  (Numero_t       * const  me,
-								  Numero_t const * const  outro)
-{
-
-}
 
 /*-----------------------------------------------------------------*/
 static inline
@@ -480,13 +427,13 @@ int Compara_  ( MeuRacional_t const * const  me,
 static  int	compara_ 	(Numero_t const * const  me,
                          Numero_t const * const  outro)
 {
-   double diff_Num, diff_Den;
+   long int diff_Num, diff_Den;
    diff_Num = abs(GetNum_((MeuRacional_pt)me) - GetNum_((MeuRacional_pt)outro));
    diff_Den = abs(GetDen_((MeuRacional_pt)me) - GetDen_((MeuRacional_pt)outro));
 
-    if (   (    diff_Num < (DBL_TRUE_MIN * 256.0))
-        && (    diff_Den < (DBL_TRUE_MIN * 256.0)))
-    {return (0);}
+    if (   (    diff_Num < (DBL_TRUE_MIN * 256.0)) && (    diff_Den < (DBL_TRUE_MIN * 256.0))){
+		return (0);
+	}
 
 	if( Modulo_((MeuRacional_pt)me) > Modulo_((MeuRacional_pt)outro) )
 	{ return (1);}
@@ -507,10 +454,12 @@ static  char * imprime_  (Numero_t const * const  me)
     char buffer[50];
 	buffer[0] = '\n';
     if (GetDen_((MeuRacional_pt) me) > 0.0)
-	{   sprintf(buffer, "%f + %f i",GetNum_((MeuRacional_pt) me),fabs(GetDen_((MeuRacional_pt) me)) );
+	{   
+		sprintf(buffer, "%f + %f i",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me)) ;
 	}
 	else
-	{   sprintf(buffer, "%f - %f i",GetNum_((MeuRacional_pt) me),fabs(GetDen_((MeuRacional_pt) me)) );
+	{   
+		sprintf(buffer, "%f - %f i",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me)) ;
 	}
 	return buffer;
 }
