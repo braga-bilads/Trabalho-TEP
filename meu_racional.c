@@ -111,7 +111,7 @@ static  void destroi_ (Numero_t   *   me);
 
 
 /*---------------------------------------------------------------------*
- * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MeuComplexo*
+ * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MeuDouble*
  * -------------------------------------------------------------------*/
 static  MeuComplexo_pt Copia_ (MeuComplexo_t const * const  me);
 
@@ -365,15 +365,13 @@ double Argumento_ (MeuComplexo_t   const * const me)
 /*------------------------------------------------------*
  * IMPLEMENTAÇÃO DAS FUNÇÕES VIRTUAIS           *
  * -----------------------------------------------------*/
-static inline
-MeuComplexo_pt Copia_ (MeuComplexo_t const * const  me)
+static inline MeuComplexo_pt Copia_ (MeuComplexo_t const * const  me)
 {
 	return ( (MeuComplexo_pt)
 	          copia_ ((Numero_pt) me));
 }
 
- static
- Numero_pt copia_ (Numero_t const * const  me)
+static Numero_pt copia_ (Numero_t const * const  me)
 {
 	assert (me != NULL);
 	Numero_pt outro = NULL;
@@ -692,8 +690,7 @@ char * Imprime_  ( MeuComplexo_t const * const  me)
 }
 static  char * imprime_  (Numero_t const * const  me)
 {
-    char buffer[50];
-	buffer[0] = '\n';
+    static char buffer[50];
     if (GetImag_((MeuComplexo_pt) me) > 0.0)
 	{   sprintf(buffer, "%f + %f i",GetReal_((MeuComplexo_pt) me),fabs(GetImag_((MeuComplexo_pt) me)) );
 	}
