@@ -34,7 +34,7 @@ struct MeuRacional_Interface_st;
                        * saída               */
 
     /* o atributo  desta classe é o ponteiro para dois long ints */
-    long int * valor;
+    long int valor[2];
 }  ;
 /* ----------------------------------------------------------*
  * declaro o ponteiro para o número do tipo MeuRacional_t      *
