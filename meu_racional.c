@@ -85,30 +85,30 @@ static  void        Destroi_ (MeuRacional_t  *   me);
  * protótipos das funçoes get e set, por exemplo           *
  *---------------------------------------------------------*/
 static 	void     Get_ (MeuRacional_t  const * const me,
-					 double * valorNum,
-					 double * valorDen);
+					 long int * valorNum,
+					 long int * valorDen);
 
 static 	void     Set_ (MeuRacional_t   * const me,
-					 double valorNum,
-					 double valorDen);
+					 long int valorNum,
+					 long int valorDen);
 
-static 	double   GetNum_ (MeuRacional_t  const * const me);
+static 	long int   GetNum_ (MeuRacional_t  const * const me);
 
 static 	void     SetNum_ (MeuRacional_t   * const me,
-					     double valorNum);
+					      long int valorNum);
 
-static 	double   GetDen_ (MeuRacional_t  const * const me);
+static 	long int   GetDen_ (MeuRacional_t  const * const me);
 
 static 	void     SetDen_ (MeuRacional_t   * const me,
-					       double valorDen);
+					       long int valorDen);
 
-static double  Modulo_ (MeuRacional_t   const * const me);
+static long int  Modulo_ (MeuRacional_t   const * const me);
 
 
  /*---------------------------------------------*
  * implementação do construtor                  *
  * ---------------------------------------------*/
-MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double valorDen)
+MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int valorDen)
 {
 	/* tabela de funções virtuais da classe Numero_t *
 	 * Esta tabela estática será compartilhada por todos os números *
@@ -143,7 +143,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double val
       * "MeuRacional_t": a tabela de interface                          *
       * note que a estrutura Interface incorpora os métodos Get e Set */
      static struct MeuRacional_Interface_st const interface = {
-        &Copia_,
+        &Copia_,  //
         &Atribui_,
         &Soma_,
         &Subt_,
@@ -165,16 +165,17 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double val
      me->Metodo = &interface;
             /* metodo aponta para vtbl de MeuRacional_t */
             /* as operações do "numero", a partir de agora,     */
-            /* são as operações sobre double                    */
+            /* são as operações sobre long int                    */
 
-    /* aloca dinamicamente uma area de memoria para um double  */
+    /* aloca dinamicamente uma area de memoria para um long int  */
     /* e atribui o endereço de memória alocada para o ponteiro */
     /* valor que está dentro da estrutura MeuRacional_st         */
 	me->valor = (long int*) malloc (2*sizeof(long int));
+
 	if (me->valor == NULL)
 	{	/*erro!!! não conseguiu alocar */
 	    printf ("Erro na alocação de memória em Num_Constroi");
-	    printf ("Nao alocou o valor double");
+	    printf ("Nao alocou o valor long int");
 	    exit (1);
 	}
 
@@ -192,9 +193,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, double valorNum,double val
  * implementação do set e get                   *
  * ---------------------------------------------*/
  static inline
-void Get_ (MeuRacional_t  const * const me,
-			double               * ptNum,
-	        double 				 * ptDen)
+void Get_ (MeuRacional_t  const * const me, long int * ptNum,long int * ptDen)
 
 {
 	 *ptNum = (me->valor[0]);
@@ -203,16 +202,14 @@ void Get_ (MeuRacional_t  const * const me,
 }
 
 
-static inline void Set_ (MeuRacional_t       * const me,
-			double                valorNum,
-	        double 				  valorDen)
+static inline void Set_ (MeuRacional_t * const me,long int valorNum, long int valorDen)
 {
 	me->valor[0] = valorNum;
 	me->valor[1] = valorDen;
 
 }
 
-static inline double GetNum_ (MeuRacional_t  const * const me)
+static inline long int GetNum_ (MeuRacional_t  const * const me)
 {
 	 return ( (me->valor[0]));
 
@@ -220,26 +217,26 @@ static inline double GetNum_ (MeuRacional_t  const * const me)
 
 
 static inline void SetNum_ (MeuRacional_t     * const me,
-			double                valorNum)
+			long int                valorNum)
 {
 	me->valor[0] = valorNum;
 
 }
 
-static inline double  GetDen_ (MeuRacional_t  const * const me)
+static inline long int  GetDen_ (MeuRacional_t  const * const me)
 {
 	 return (me->valor[1]);
 }
 
 
 static inline void SetDen_ (MeuRacional_t       * const me,
-	           double 				  valorDen)
+	           long int 				  valorDen)
 {
 	me->valor[1] = valorDen;
 }
 
 
-static double  Modulo_ (MeuRacional_t   const * const me)
+static long int  Modulo_ (MeuRacional_t   const * const me)
 {
    return( sqrt(GetNum_(me)*(GetNum_(me)) + (GetDen_(me)*(GetDen_(me))  )));
 }
@@ -388,7 +385,7 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 								Numero_t const * const  outro,
 								Numero_t       * const  res)
 {
-	double quociente;
+	long int quociente;
 	quociente = GetNum_((MeuRacional_pt) outro) *
 	            GetNum_((MeuRacional_pt) outro)    +
 	            GetDen_((MeuRacional_pt) outro) *
@@ -476,7 +473,7 @@ void Destroi_  ( MeuRacional_t  *   me)
 }
 static void destroi_ (Numero_t *  me)
 {
-	/* primeiro destroi o valor double */
+	/* primeiro destroi o valor long int */
 	free (((MeuRacional_pt) me)->valor);
 	/*... e só agora destroi-se o número virtual da classe base */
 	free ((Numero_t *) me);
