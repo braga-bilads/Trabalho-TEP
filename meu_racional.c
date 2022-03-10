@@ -121,10 +121,10 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &subt_,
         &mult_,
         &divd_,
-        &ac_soma_,
-        &ac_subt_,
-        &ac_mult_,
-        &ac_divd_,
+        0,
+        0, /// 0 pois essas funções não são usadas para racionais
+        0,
+        0,
         &compara_,
         &imprime_,
         &destroi_
@@ -143,23 +143,23 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
       * "MeuRacional_t": a tabela de interface                          *
       * note que a estrutura Interface incorpora os métodos Get e Set */
      static struct MeuRacional_Interface_st const interface = {
-        &Copia_,  //
-        &Atribui_,
-        &Soma_,
-        &Subt_,
-        &Mult_,
-        &Divd_,
-        &Compara_,
-        &Imprime_,
-        &Destroi_,
-        &Get_,
-        &Set_,
-        &GetNum_,
-        &SetNum_,
-        &GetDen_,
-        &SetDen_,   
-        &Modulo_,
-		&Simplifica_
+        &Copia_,     // parece ok
+        &Atribui_,   // parece ok
+        &Soma_,      //
+        &Subt_,      //
+        &Mult_,      //
+        &Divd_,      //  
+        &Compara_,   //
+        &Imprime_,   //
+        &Destroi_,   //
+        &Get_,       // parece ok
+        &Set_,       // parece ok
+        &GetNum_,    // parece ok
+        &SetNum_,    // parece ok
+        &GetDen_,    // parece ok
+        &SetDen_,    // parece ok
+        &Modulo_,    //
+		&Simplifica_ //
      };
 
      me->Metodo = &interface;
@@ -216,12 +216,11 @@ static inline long int GetNum_ (MeuRacional_t  const * const me)
 }
 
 
-static inline void SetNum_ (MeuRacional_t     * const me,
-			long int                valorNum)
+static inline void SetNum_ (MeuRacional_t * const me,long int valorNum)
 {
 	me->valor[0] = valorNum;
-
 }
+
 
 static inline long int  GetDen_ (MeuRacional_t  const * const me)
 {
@@ -229,8 +228,7 @@ static inline long int  GetDen_ (MeuRacional_t  const * const me)
 }
 
 
-static inline void SetDen_ (MeuRacional_t       * const me,
-	           long int 				  valorDen)
+static inline void SetDen_ (MeuRacional_t * const me,long int valorDen)
 {
 	me->valor[1] = valorDen;
 }
