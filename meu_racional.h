@@ -46,7 +46,7 @@ typedef struct MeuRacional_st  MeuRacional_t;
 
 
 struct MeuRacional_Interface_st {
-
+    
 	MeuRacional_pt (*copia)	(MeuRacional_t const * const me);
 
     MeuRacional_pt (*atribui)	(MeuRacional_t const * const  me,

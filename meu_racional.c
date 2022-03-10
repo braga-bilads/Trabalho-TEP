@@ -34,6 +34,18 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
 									Numero_t const * const  outro,
 									Numero_t       * const  res);
 
+static  Numero_pt ac_soma_ (Numero_t       * const  me,
+									 Numero_t const * const  outro);
+
+static  Numero_pt ac_subt_ (Numero_t       * const  me,
+									 Numero_t const * const  outro);
+
+static  Numero_pt ac_mult_ (Numero_t       * const  me,
+									 Numero_t const * const  outro);
+
+static  Numero_pt ac_divd_ (Numero_t       * const  me,
+									 Numero_t const * const  outro);
+
 static  Numero_pt divd_  ( Numero_t const * const  me,
 									Numero_t const * const  outro,
 									Numero_t       * const  res);
@@ -104,6 +116,17 @@ static 	void     SetDen_ (MeuRacional_t   * const me,
 
 static long int  Modulo_ (MeuRacional_t   const * const me);
 
+static  MeuRacional_pt Ac_Soma_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro);
+
+static  MeuRacional_pt Ac_Subt_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro);
+
+static  MeuRacional_pt Ac_Mult_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro);
+
+static  MeuRacional_pt Ac_Divd_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro);
 
  /*---------------------------------------------*
  * implementação do construtor                  *
@@ -115,16 +138,16 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
 	 * da classe MeuRacional_t                                        */
 
     static struct NumeroVtbl const vtbl = {
-        &copia_,  //ok
+        &copia_,//ok
         &atribui_, //ok
-        &soma_,  //ok  
-        &subt_, 
+        &soma_,//ok  
+        &subt_,
         &mult_,
         &divd_,
-        0,
-        0, /// 0 pois essas funções não são usadas para racionais
-        0,
-        0,
+        &ac_soma_,
+        &ac_subt_, /// 0 pois essas funções não são usadas para racionais
+        &ac_mult_,
+        &ac_divd_,
         &compara_,
         &imprime_,
         &destroi_
@@ -484,3 +507,5 @@ static void destroi_ (Numero_t *  me)
 static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
 
 }
+
+
