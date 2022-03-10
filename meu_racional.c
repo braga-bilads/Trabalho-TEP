@@ -92,7 +92,7 @@ static  char *      Imprime_  (MeuRacional_t const * const  me);
 static  void        Destroi_ (MeuRacional_t  *   me);
 
 /* ------------------------------------------------------- *
- * funções que são típicas do numero complexo, mas não são *
+ * funções que são típicas do numero Racional, mas não são *
  * funcoes da classe virtual básica número                 *
  * protótipos das funçoes get e set, por exemplo           *
  *---------------------------------------------------------*/
@@ -114,7 +114,7 @@ static 	long int   GetDen_ (MeuRacional_t  const * const me);
 static 	void     SetDen_ (MeuRacional_t   * const me,
 					       long int valorDen);
 
-static long int  Modulo_ (MeuRacional_t   const * const me);
+static  MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me);
 
 static  MeuRacional_pt Ac_Soma_ (MeuRacional_t       * const  me,
 								 MeuRacional_t const * const  outro);
@@ -138,9 +138,9 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
 	 * da classe MeuRacional_t                                        */
 
     static struct NumeroVtbl const vtbl = {
-        &copia_,//ok
+        &copia_, //ok
         &atribui_, //ok
-        &soma_,//ok  
+        &soma_, //ok  
         &subt_,
         &mult_,
         &divd_,
@@ -169,7 +169,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &Copia_,     // parece ok
         &Atribui_,   // parece ok
         &Soma_,      // feita
-        &Subt_,      //
+        &Subt_,      // 
         &Mult_,      //
         &Divd_,		 //
 		&Ac_Soma_,	 //
@@ -177,15 +177,15 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
 		&Ac_Mult_,   //
 		&Ac_Divd_,   //  
         &Compara_,   //
-        &Imprime_,   //
-        &Destroi_,   //
+        &Imprime_,   // parece ok
+        &Destroi_,   // parece ok
         &Get_,       // parece ok
         &Set_,       // parece ok
         &GetNum_,    // parece ok
         &SetNum_,    // parece ok
         &GetDen_,    // parece ok
         &SetDen_,    // parece ok
-        &Modulo_,    //
+        &Modulo_,    // parece ok
 		&Simplifica_ //
      };
 
@@ -261,9 +261,10 @@ static inline void SetDen_ (MeuRacional_t * const me,long int valorDen)
 }
 
 
-static long int  Modulo_ (MeuRacional_t   const * const me)
+static MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me)
 {
-   return( sqrt(GetNum_(me)*(GetNum_(me)) + (GetDen_(me)*(GetDen_(me))  )));
+   MeuRacional_pt resposta = Racional_constroi(resposta,abs(GetNum_(me)),abs(GetDen_(me)));
+   return(resposta);
 }
 
 
@@ -280,7 +281,7 @@ static Numero_pt copia_ (Numero_t const * const  me)
 {
 	assert (me != NULL);
 	Numero_pt outro = NULL;
-	outro = (Numero_pt) Complexo_constroi
+	outro = (Numero_pt) Racional_constroi
 							((MeuRacional_pt) outro,
 							  GetNum_((MeuRacional_pt) me),
 							  GetDen_((MeuRacional_pt) me));
@@ -377,7 +378,7 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
 								Numero_t       * const  res)
 {
      MeuRacional_pt  temp = NULL;
-     temp = Complexo_constroi(temp, 0.0,0.0);
+     temp = Racional_constroi(temp, 0.0,0.0);
 
 	 SetNum_(temp,
 				(GetNum_((MeuRacional_pt) me) *
@@ -421,7 +422,7 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 	            GetDen_((MeuRacional_pt) outro) ;
 
 	MeuRacional_pt  temp = NULL;
-	temp = Complexo_constroi(temp, 0.0,0.0);
+	temp = Racional_constroi(temp, 0.0,0.0);
 
 	 SetNum_(temp,
 				((GetNum_((MeuRacional_pt) me) *
@@ -461,8 +462,9 @@ static  int	compara_ 	(Numero_t const * const  me,
 		return (0);
 	}
 
-	if( Modulo_((MeuRacional_pt)me) > Modulo_((MeuRacional_pt)outro) )
-	{ return (1);}
+	if( Modulo_((MeuRacional_pt)me) > Modulo_((MeuRacional_pt)outro) ){ 
+		return (1);
+	}
 	else if( Modulo_((MeuRacional_pt)me) < Modulo_((MeuRacional_pt)outro) )
 	{  return (-1);};
 
@@ -509,7 +511,30 @@ static void destroi_ (Numero_t *  me)
 }
  /*-----------------------------------------------------------------*/
 static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
-
+	long int den = GetDen_(me);
+	long int num = GetNum_(me);
+	int condi = 1;
+	long int mod = 1;
+	
+	int num1, num2, GCD;
+    printf("Enter the value for num1 /num2:");
+    
+    if (num < den){
+      	x = num;
+    } else {
+      	x = den;
+    }
+    
+    while (x > 1) {
+        if (num % x == 0 && den % x == 0)
+          break;
+        x--;
+    }
+    
+	den = den/GCD;
+	num = num/GDC;
+   	Set_(me,num,den);
+   	return me;
 }
 
 

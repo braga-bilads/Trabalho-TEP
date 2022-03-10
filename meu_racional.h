@@ -17,21 +17,8 @@ struct MeuRacional_Interface_st;
 
  struct MeuRacional_st {
     struct Numero_st super;
-                     /* <== herda a "super-classe Numeros",
-                      * isto é, a classe superior a MeuDouble na
-                      * hierarquia dos números
-                      * Com isso, herda as operações da
-                      * tabela de métodos comuns a todos os Numeros
-                      * assim como os atributos desta classe base,
-                      * (caso houvessem)       */
 
     struct MeuRacional_Interface_st const *  Metodo;
-                      /* o ponteiro para a tabela de
-                       * ponteiros para funções
-                       * que são apenas as chamadas para os métodos
-                       * da super-classe, porém fazendo as
-                       * devidas conversões na "entrada" e na
-                       * saída               */
 
     /* o atributo  desta classe é o ponteiro para dois long ints */
     long int *valor;
@@ -107,7 +94,7 @@ struct MeuRacional_Interface_st {
 	                          double             valorNum);
 
 
-    double  (*modulo) (MeuRacional_t   const * const me);
+    MeuRacional_pt  (*modulo) (MeuRacional_t   const * const me);
 
     MeuRacional_pt  (*simplifica) (MeuRacional_pt me);
     /*------------------------------------------------------*/
