@@ -145,7 +145,7 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &mult_,
         &divd_,
         &ac_soma_,
-        &ac_subt_, /// 0 pois essas funções não são usadas para racionais
+        &ac_subt_, 
         &ac_mult_,
         &ac_divd_,
         &compara_,
@@ -171,7 +171,11 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &Soma_,      // feita
         &Subt_,      //
         &Mult_,      //
-        &Divd_,      //  
+        &Divd_,		 //
+		&Ac_Soma_,	 //
+		&Ac_Subt_,	 //
+		&Ac_Mult_,   //
+		&Ac_Divd_,   //  
         &Compara_,   //
         &Imprime_,   //
         &Destroi_,   //

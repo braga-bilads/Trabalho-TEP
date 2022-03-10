@@ -68,6 +68,17 @@ struct MeuRacional_Interface_st {
 							 MeuRacional_t const * const  outro,
 							 MeuRacional_t       * const res);
 
+    MeuRacional_pt (*ac_soma)	(MeuRacional_t       * const  me,
+							     MeuRacional_t const * const  outro);
+
+    MeuRacional_pt (*ac_subt)	(MeuRacional_t       * const  me,
+							     MeuRacional_t const * const outro);
+
+    MeuRacional_pt (*ac_mult)	(MeuRacional_t       * const  me,
+							     MeuRacional_t const * const outro);
+
+    MeuRacional_pt (*ac_divd)	(MeuRacional_t        * const  me,
+							     MeuRacional_t const * const outro);
 
     int			(*compara)	(MeuRacional_t const * const  me,
 							 MeuRacional_t const * const  outro);
