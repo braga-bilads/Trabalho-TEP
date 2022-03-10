@@ -302,7 +302,7 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 
 	mc = GetDen_(me) * GetDen_(outro);
 	den = mc;
-	num = (GetNum_(me)/mc) + (GetNum_(outro)/mc);
+	num = (GetNum_(me)*(GetDen_(me)/mc)) + (GetNum_(outro)*(GetDen_(outro)/mc));
 
 	Set_(res, num, den);
 
