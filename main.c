@@ -77,7 +77,7 @@ int main ()
 	MeuRacional_pt ptR1=NULL, ptR2=NULL, ptR3=NULL;
 
 
-	ptR1 = Racional_constroi(ptR1, 10.0, 20.0);
+	ptR1 = Racional_constroi(ptR1, 10, 20);
 
 	ptR2 = ptR1->Metodo->copia(ptR1);
 
@@ -85,7 +85,7 @@ int main ()
 				ptR1->Metodo->imprime(ptR1),
 				ptR2->Metodo->imprime(ptR2));
 
-    ptR3 = Racional_constroi (ptR3, 0.0, 0.0);
+    ptR3 = Racional_constroi (ptR3, 0, 0);
     ptR3 = ptR2->Metodo->atribui(ptR2, ptR3);
     printf ("ptR3 recebeu o valor de Y2 = %s \n",
 				ptR3->Metodo->imprime(ptR3));
