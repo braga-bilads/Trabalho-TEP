@@ -1,6 +1,6 @@
 NAME_PROGRAM = final.exe
 CC = gcc
-FLAGS = -lm -pedantic -Wall 
+FLAGS = -pedantic -Wall -lm 
 C_FILES = $(wildcard *.c)
 O_FILES = $(patsubst %.c, %.o, $(C_FILES))
 
@@ -9,19 +9,19 @@ all: $(O_FILES) create_executable
 main.o: main.c
 	@ echo "\033[1;32m"
 	@ echo "Compiling main.c ..."
-	@ $(CC) -c $< $(FLAGS)
+	@ $(CC) -c $< $(FLAGS) -lm
 	@ echo "\033[0m"
 
 %.o: %.c %.h
 	@ echo "\033[1;32m"
 	@ echo "Compiling $< ..."
-	@ $(CC) -c $< $(FLAGS)
+	@ $(CC) -c $< $(FLAGS) -lm
 	@ echo "\033[0m"
 
 create_executable: 
 	@ echo "\033[1;32m"
 	@ echo "Creating executable..."
-	@ $(CC) -o $(NAME_PROGRAM) $(O_FILES)
+	@ $(CC) -o $(NAME_PROGRAM) $(O_FILES) -lm
 	@ echo "\033[0m"
 
 run: 

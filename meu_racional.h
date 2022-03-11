@@ -75,23 +75,23 @@ struct MeuRacional_Interface_st {
     void        (*destroi)  (MeuRacional_t       *        me);
     /*------------------------------------------------------*/
     void       (*get     ) (MeuRacional_t  const * const me,
-							double               * ptNum,
-	                        double 				 * ptDen);
+							long int               * ptNum,
+	                        long int 				 * ptDen);
 
 	void   	   (*set     ) (MeuRacional_t        * const me,
-	                          double             valorNum,
-	                          double 		     valorDen);
+	                          long int             valorNum,
+	                          long int 		     valorDen);
 
-	double       (*getNum ) (MeuRacional_t  const * const me);
+	long int       (*getNum ) (MeuRacional_t  const * const me);
 
 	void   	   (*setNum ) (MeuRacional_t        * const me,
-	                          double             valorNum);
+	                          long int             valorNum);
 
 
-	double       (*getDen ) (MeuRacional_t  const * const me);
+	long int       (*getDen ) (MeuRacional_t  const * const me);
 
 	void   	   (*setDen ) (MeuRacional_t        * const me,
-	                          double             valorNum);
+	                          long int             valorNum);
 
 
     MeuRacional_pt  (*modulo) (MeuRacional_t   const * const me);

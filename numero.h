@@ -30,7 +30,7 @@ struct Numero_st;
  * --------------------------------------------------------*/
 struct Numero_st {
     struct NumeroVtbl const *metodo; /* ptr p/ os métodos */
-};i 10
+} ;
 typedef struct Numero_st 	Numero_t;
 typedef struct Numero_st 	* Numero_pt;
 
