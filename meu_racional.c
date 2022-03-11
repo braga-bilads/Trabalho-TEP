@@ -8,6 +8,13 @@
 * numero.h definiu a interface do "número_t virtual"
 * que é usada aqui
 * ********************************************************************/
+
+
+
+/* Comentario de Gabriel Braga Ladislau: Ola professor Saulo, nesse trabalho eu implementei a função de simplificação
+   achei mais conveniente usa-la nas funções de Soma e Subtração para ter um resultado exato da soma, ela não é usada
+   todavia em funções de Divisão e Multiplicação por minha escolha simplesmente, espero que goste do meu trabalho!*/
+
 #include <float.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -265,7 +272,8 @@ static inline void SetDen_ (MeuRacional_t * const me,long int valorDen)
 
 static MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me)
 {
-   MeuRacional_pt resposta = Racional_constroi(resposta,labs(GetNum_(me)),labs(GetDen_(me)));
+   MeuRacional_pt resposta = NULL;
+   resposta = Racional_constroi(resposta,labs(GetNum_(me)),labs(GetDen_(me)));
    return(resposta);
 }
 
@@ -326,23 +334,37 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 						   Numero_t const * const  outro,
 						   Numero_t       * const  res)
 {
-	long int den;
-	long int num;
-	long int mc;
+	long int den=1;
+	long int num=1;
+	long int mmc=1;
+	long int x = 1;
+	long int den1 = labs(GetDen_((MeuRacional_pt)me));
+	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
 
-	mc = GetDen_((MeuRacional_pt)me) * GetDen_((MeuRacional_pt)outro);
-	den = mc;
-	num = (GetNum_((MeuRacional_pt)me)*(GetDen_((MeuRacional_pt)me)/mc)) + 
-		  (GetNum_((MeuRacional_pt)outro)*(GetDen_((MeuRacional_pt)outro)/mc));
-
+	if(den1 != den2){
+		if (den2 < den1){
+			x = den2;
+		} else {
+			x = den1;
+		}
+		
+		while (x > 1) {
+			if (den2 % x == 0 && den1 % x == 0)
+			break;
+			x--;
+		}
+	}
+	else {
+		x = den1;
+	}
+	mmc = x;
+	den = mmc;
+	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) + 
+			(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
 	
-	MeuRacional_pt temp = Racional_constroi(temp,num,den);
-	temp = Simplifica_((MeuRacional_pt)res);
-	Set_((MeuRacional_pt)res,GetNum_(temp), GetDen_(temp));
+	Set_((MeuRacional_pt)res,num,den);
 
-	Destroi_(temp);
-
-	return (Numero_pt) res;
+	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
 }
 
 
@@ -361,20 +383,37 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 								    Numero_t const * const  outro,
 								    Numero_t       * const  res)
 {	
-	long int mc;
+	long int mmc;
 	long int num;
 	long int den;
-	mc = GetDen_((MeuRacional_pt)me) * GetDen_((MeuRacional_pt)outro);
-	num = (GetNum_((MeuRacional_pt)me)*(GetDen_((MeuRacional_pt)me)/mc)) - 
-		  (GetNum_((MeuRacional_pt)outro)*(GetDen_((MeuRacional_pt)outro)/mc));
+	long int x = 1;
+	long int den1 = labs(GetDen_((MeuRacional_pt)me));
+	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
 
-	den = mc;
+	if(den1 != den2){
+		if (den2 < den1){
+			x = den2;
+		} else {
+			x = den1;
+		}
+		
+		while (x > 1) {
+			if (den2 % x == 0 && den1 % x == 0)
+			break;
+			x--;
+		}
+	}
+	else x = den1;
+	mmc = x;
+	den = mmc;
 
-	MeuRacional_pt temp = Racional_constroi(temp,num,den);
-	temp = Simplifica_((MeuRacional_pt)res);
-	Set_((MeuRacional_pt)res,GetNum_(temp), GetDen_(temp));;
+	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) - 
+			(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
+	
+	printf("%ld",(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
+	Set_((MeuRacional_pt)res,num,den);
 
-	return (Numero_pt) res;
+	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
 }
 
 /*-----------------------------------------------------------------*/
@@ -396,7 +435,7 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
     Set_((MeuRacional_pt)res,GetNum_((MeuRacional_pt)me) * GetNum_((MeuRacional_pt)outro),
 							 GetDen_((MeuRacional_pt)me) * GetDen_((MeuRacional_pt)outro));
 
-
+	
 	return ( (Numero_pt) res);
 }
 
@@ -498,15 +537,22 @@ static  int	compara_ 	(Numero_t const * const  me,
 	Numero_pt numero1 = (Numero_pt) Simplifica_((MeuRacional_pt)me);
     Numero_pt numero2 = (Numero_pt) Simplifica_((MeuRacional_pt)outro);
 
-    if(GetNum_((MeuRacional_pt)numero1) == GetNum_((MeuRacional_pt)numero2)){
-		if (GetDen_((MeuRacional_pt)numero1) == GetDen_((MeuRacional_pt)numero2)){
-			return 1 ;                  //1 vai valer como se eles fossem iguais
-		}
-		else return 0;
+	numero1 = (Numero_pt)Modulo_((MeuRacional_pt)numero1);
+	numero2 = (Numero_pt)Modulo_((MeuRacional_pt)numero2);
+
+    double num1 = ((double) GetNum_((MeuRacional_pt) numero1)) / 
+					((double) GetDen_((MeuRacional_pt) numero1));
+
+	double num2 = ((double) GetNum_((MeuRacional_pt) numero2)) / 
+					((double) GetDen_((MeuRacional_pt) numero2));
+
+	if(num1>num2){
+		return 1;
 	}
-	else{
-		return 0;                       //0 vai valer como se fossem diferentes
+	else if(num2>num1){
+		return -1;
 	}
+	return 0;
 }
 
 /*-----------------------------------------------------------------*/
@@ -517,10 +563,12 @@ char * Imprime_  ( MeuRacional_t const * const  me)
 }
 static  char * imprime_  (Numero_t const * const  me)
 {
-    char buffer[50];
+    static char buffer[50];
 	buffer[0] = '\n';
-       
-	sprintf(buffer, "%ld/%ld",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me)) ;
+    if(GetNum_((MeuRacional_pt) me)> 0){   
+		sprintf(buffer, "%ld/%ld",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me)) ;
+	}
+	else sprintf(buffer, "-%ld/%ld",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me));
 	
 	return buffer;
 }
@@ -546,34 +594,35 @@ static void destroi_ (Numero_t *  me)
 static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
 	long int den = labs(GetDen_(me));
 	long int num = labs(GetNum_(me));
-	
-	int  x;
-    
-    if (num < den){
-      	x = num;
-    } else {
-      	x = den;
-    }
-    
-    while (x > 1) {
-        if (num % x == 0 && den % x == 0)
-          break;
-        x--;
-    }
-    
-	den = den/x;
-	num = num/x;
+	long int n = GetNum_(me);
 
-	if(GetNum_(me)>=0) {
-		MeuRacional_pt resposta;
-		Racional_constroi(resposta,num,den);
+	long int  x=1;
+    if(num!=1 && den!=1 && num!=0 &&den!=0){
+		if (num < den){
+			x = num;
+		} else {
+			x = den;
+		}
+		
+		while (x > 1) {
+			if (num % x == 0 && den % x == 0)
+			break;
+			x--;
+		}
+    
+		den = den/x;
+		num = num/x;
+	}
+	static MeuRacional_pt resposta;
+	
+	
+	if(n < 0) {
+		num = -num;
+		resposta = Racional_constroi(resposta,num,den);
 		return resposta;
 	}
-	else{
-		MeuRacional_pt resposta;
-		Racional_constroi(resposta,-num,den);
-		return resposta;
-	}
+	resposta = Racional_constroi(resposta,num,den);
+	return resposta;
 }
 
 

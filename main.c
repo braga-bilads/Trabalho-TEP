@@ -71,13 +71,21 @@ int main ()
 
 	ptC1->Metodo->destroi (ptC1);
 	ptC2->Metodo->destroi (ptC2);
-   ptC3->Metodo->destroi (ptC3);
+    ptC3->Metodo->destroi (ptC3);
 
+
+    printf("\n\nPARTE DO RACIONAL:\n\n");
    /* ------ PARTE ORIGINAL DO PROGRAMA: MEU_RACIONAL ------*/
+
+   /* foi copiado o código acima e feito alterações para mostrar as funções com racionais
+      essa parte do código também inclui o uso da função implementada Simplifica antes de 
+      liberar o heap de memória */
+
+
 	MeuRacional_pt ptR1=NULL, ptR2=NULL, ptR3=NULL;
 
 
-	ptR1 = Racional_constroi(ptR1, 10, 20);
+	ptR1 = Racional_constroi(ptR1,10,20);
 
 	ptR2 = ptR1->Metodo->copia(ptR1);
 
@@ -136,17 +144,13 @@ int main ()
        printf ("Y2 eh menor que Y3 \n");
     }
 
+
+
+
+
 	ptR1->Metodo->destroi (ptR1);
 	ptR2->Metodo->destroi (ptR2);
-   ptR3->Metodo->destroi (ptR3);
+    ptR3->Metodo->destroi (ptR3);
 
 	return (0);
 }
-
-
-
-
-
-
-
-
