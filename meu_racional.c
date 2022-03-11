@@ -142,12 +142,12 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &atribui_, //ok
         &soma_,    //ok  
         &subt_,    //ok
-        &mult_,    //
-        &divd_,    //
-        &ac_soma_, //
-        &ac_subt_, //
-        &ac_mult_, //
-        &ac_divd_, //
+        &mult_,    //ok
+        &divd_,    //ok
+        &ac_soma_, //ok
+        &ac_subt_, //ok
+        &ac_mult_, //ok
+        &ac_divd_, //ok
         &compara_, //ok
         &imprime_, //ok
         &destroi_  //ok
@@ -172,10 +172,10 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &Subt_,      // implementada
         &Mult_,      // implementada
         &Divd_,		 // implementada
-		&Ac_Soma_,	 //
-		&Ac_Subt_,	 //
-		&Ac_Mult_,   //
-		&Ac_Divd_,   //  
+		&Ac_Soma_,	 // implementada
+		&Ac_Subt_,	 // implementada
+		&Ac_Mult_,   // implementada 
+		&Ac_Divd_,   // implementada  
         &Compara_,   // implementada
         &Imprime_,   // parece ok
         &Destroi_,   // parece ok
@@ -416,7 +416,66 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 
 	return ( (Numero_pt) res);
 }
+/*-----------------------------------------------------------------*/
+static  MeuRacional_pt Ac_Soma_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro)
+{
+	return((MeuRacional_pt)ac_soma_((Numero_pt)me ,(Numero_pt)outro))
+}
 
+static  Numero_pt ac_soma_ (Numero_t       * const  me,
+									 Numero_t const * const  outro)
+{
+	return((Numero_pt)Soma_((MeuRacional_pt)me,
+							(MeuRacional_pt)outro,
+							(MeuRacional_pt)me));
+}
+
+
+/*-----------------------------------------------------------------*/
+static  MeuRacional_pt Ac_Subt_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro)
+{
+	return((MeuRacional_pt)ac_subt_((Numero_pt)me ,(Numero_pt)outro))
+}
+
+static  Numero_pt ac_subt_ (Numero_t       * const  me,
+									 Numero_t const * const  outro)
+{
+	return((Numero_pt)Subt_((MeuRacional_pt)me,
+							(MeuRacional_pt)outro,
+							(MeuRacional_pt)me));
+}
+
+/*-----------------------------------------------------------------*/
+static  MeuRacional_pt Ac_Mult_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro)
+{
+	return((MeuRacional_pt)ac_mult_((Numero_pt)me ,(Numero_pt)outro))
+}
+
+static  Numero_pt ac_mult_ (Numero_t       * const  me,
+									 Numero_t const * const  outro)
+{
+	return((Numero_pt)Mult_((MeuRacional_pt)me,
+							(MeuRacional_pt)outro,
+							(MeuRacional_pt)me));
+}
+
+/*-----------------------------------------------------------------*/
+static  MeuRacional_pt Ac_Divd_ (MeuRacional_t       * const  me,
+								 MeuRacional_t const * const  outro)
+{
+	return((MeuRacional_pt)ac_divd_((Numero_pt)me ,(Numero_pt)outro))
+}
+
+static  Numero_pt ac_divd_ (Numero_t       * const  me,
+									 Numero_t const * const  outro)
+{
+	return((Numero_pt)Divd_((MeuRacional_pt)me,
+							(MeuRacional_pt)outro,
+							(MeuRacional_pt)me));
+}
 
 /*-----------------------------------------------------------------*/
 static inline
