@@ -454,21 +454,19 @@ int Compara_  ( MeuRacional_t const * const  me,
 static  int	compara_ 	(Numero_t const * const  me,
                          Numero_t const * const  outro)
 {
-   long int diff_Num, diff_Den;
-   diff_Num = abs(GetNum_((MeuRacional_pt)me) - GetNum_((MeuRacional_pt)outro));
-   diff_Den = abs(GetDen_((MeuRacional_pt)me) - GetDen_((MeuRacional_pt)outro));
+	//estabelecendo que os numeros devem ser comparados simplificados
+	Numero_pt numero1 = (Numero_pt) Simplifica_((MeuRacional_pt)me);
+    Numero_pt numero2 = (Numero_pt) Simplifica_((MeuRacional_pt)outro);
 
-    if (   (    diff_Num < (DBL_TRUE_MIN * 256.0)) && (    diff_Den < (DBL_TRUE_MIN * 256.0))){
-		return (0);
+    if(GetNum_((MeuRacional_pt)numero1) == GetNum_((MeuRacional_pt)numero2)){
+		if (GetDen_((MeuRacional_pt)numero1) == GetDen_((MeuRacional_pt)numero2)){
+			return 1 ;                  //1 vai valer como se eles fossem iguais
+		}
+		else return 0;
 	}
-
-	if( Modulo_((MeuRacional_pt)me) > Modulo_((MeuRacional_pt)outro) ){ 
-		return (1);
+	else{
+		return 0;                       //0 vai valer como se fossem diferentes
 	}
-	else if( Modulo_((MeuRacional_pt)me) < Modulo_((MeuRacional_pt)outro) )
-	{  return (-1);};
-
-	return(0);
 }
 
 /*-----------------------------------------------------------------*/
