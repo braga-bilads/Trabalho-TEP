@@ -341,22 +341,23 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 	long int den1 = labs(GetDen_((MeuRacional_pt)me));
 	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
 
-	if(den1 != den2){
-		if (den2 < den1){
-			x = den2;
-		} else {
-			x = den1;
-		}
+	
+	if (den2 > den1){
+		x = den2;
 		
-		while (x > 1) {
-			if (den2 % x == 0 && den1 % x == 0)
-			break;
-			x--;
-		}
-	}
-	else {
+	} else {
 		x = den1;
 	}
+		
+	while (x > 1) {
+		if (x % den2 == 0 && x % den1 == 0)
+		break;
+		x++;
+	}
+	
+	
+	x = den1;
+	
 	mmc = x;
 	den = mmc;
 	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) + 
@@ -390,27 +391,28 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 	long int den1 = labs(GetDen_((MeuRacional_pt)me));
 	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
 
-	if(den1 != den2){
-		if (den2 < den1){
-			x = den2;
-		} else {
-			x = den1;
-		}
+	
+	if (den2 > den1){
+		x = den2;
 		
-		while (x > 1) {
-			if (den2 % x == 0 && den1 % x == 0)
-			break;
-			x--;
-		}
+	} else {
+		x = den1;
 	}
-	else x = den1;
+		
+	while (x > 1) {
+		if (x % den2 == 0 && x % den1 == 0)
+		break;
+		x++;
+	}
+	
+
 	mmc = x;
 	den = mmc;
 
 	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) - 
 			(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
 	
-	printf("%ld",(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
+	
 	Set_((MeuRacional_pt)res,num,den);
 
 	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
@@ -600,15 +602,17 @@ static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
     if(num!=1 && den!=1 && num!=0 &&den!=0){
 		if (num < den){
 			x = num;
+		
 		} else {
 			x = den;
 		}
 		
 		while (x > 1) {
 			if (num % x == 0 && den % x == 0)
-			break;
+				break;
 			x--;
 		}
+	
     
 		den = den/x;
 		num = num/x;
