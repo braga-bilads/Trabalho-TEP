@@ -1,12 +1,3 @@
-/**********************************************************************
-* Baseado no código disponibilizado em
-*  Application Note: "Object-Oriented Programming in C"
-* https://www.state-machine.com/doc/AN_OOP_in_C.pdf
-*
-* Aqui se apresenta a interface do número do tipo "complexo"
-*
-* numero.h definiu a interface do "número_t virtual"
-* ********************************************************************/
 
 #ifndef MEURACIONAL_H
 #define MEURACIONAL_H

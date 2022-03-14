@@ -1,15 +1,11 @@
 
-/* Comentario de Gabriel Braga Ladislau: Ola professor Saulo, nesse trabalho eu implementei a função de simplificação
-   achei mais conveniente usa-la nas funções de Soma e Subtração para ter um resultado exato da soma, ela não é usada
-   todavia em funções de Divisão e Multiplicação por minha escolha simplesmente, espero que goste do meu trabalho!*/
-
 #include <float.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <math.h>
-#include "meu_racional.h"
+#include "minha_matriz.h"
 
 
 static  Numero_pt copia_ (Numero_t const * const  me);
@@ -55,78 +51,84 @@ static  void destroi_ (Numero_t   *   me);
 
 
 /*---------------------------------------------------------------------*
- * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MeuRacional*
+ * IMPLEMENTAÇÃO DA INTERFACE PÚBLICA das funções virtuais de MinhaMatriz*
  * -------------------------------------------------------------------*/
-static  MeuRacional_pt Copia_ (MeuRacional_t const * const  me);
+static  MinhaMatriz_pt Copia_ (MinhaMatriz_t const * const  me);
 
-static  MeuRacional_pt Atribui_ (MeuRacional_t const * const  me,
-							     MeuRacional_t       * const  outro) ;
+static  MinhaMatriz_pt Atribui_ (MinhaMatriz_t const * const  me,
+							     MinhaMatriz_t       * const  outro) ;
 
-static  MeuRacional_pt Soma_  (MeuRacional_t const * const  me,
-							   MeuRacional_t const * const  outro,
-							   MeuRacional_t       * const  res);
+static  MinhaMatriz_pt Soma_  (MinhaMatriz_t const * const  me,
+							   MinhaMatriz_t const * const  outro,
+							   MinhaMatriz_t       * const  res);
 
-static  MeuRacional_pt Subt_  (MeuRacional_t const * const  me,
-							   MeuRacional_t const * const  outro,
-							   MeuRacional_t       * const  res);
+static  MinhaMatriz_pt Subt_  (MinhaMatriz_t const * const  me,
+							   MinhaMatriz_t const * const  outro,
+							   MinhaMatriz_t       * const  res);
 
-static  MeuRacional_pt Mult_  ( MeuRacional_t const * const  me,
-								MeuRacional_t const * const  outro,
-								MeuRacional_t       * const  res);
+static  MinhaMatriz_pt Mult_  ( MinhaMatriz_t const * const  me,
+								MinhaMatriz_t const * const  outro,
+								MinhaMatriz_t       * const  res);
 
-static  MeuRacional_pt Divd_  ( MeuRacional_t const * const  me,
-								MeuRacional_t const * const  outro,
-								MeuRacional_t       * const  res);
+static  MinhaMatriz_pt Divd_  ( MinhaMatriz_t const * const  me,
+								MinhaMatriz_t const * const  outro,
+								MinhaMatriz_t       * const  res);
 
 
-static  int	Compara_ 	    (MeuRacional_t const * const  me,
-							 MeuRacional_t const * const  outro);
+static  int	Compara_ 	    (MinhaMatriz_t const * const  me,
+							 MinhaMatriz_t const * const  outro);
 
-static  char *      Imprime_  (MeuRacional_t const * const  me);
+static  char *      Imprime_  (MinhaMatriz_t const * const  me);
 
-static  void        Destroi_ (MeuRacional_t  *   me);
+static  void        Destroi_ (MinhaMatriz_t  *   me);
 
-static  MeuRacional_pt  Simplifica_ (MeuRacional_pt me);
+static  MinhaMatriz_pt  Simplifica_ (MinhaMatriz_pt me);
 
 /* ------------------------------------------------------- *
  * funções que são típicas do numero Racional, mas não são *
  * funcoes da classe virtual básica número                 *
  * protótipos das funçoes get e set, por exemplo           *
  *---------------------------------------------------------*/
-static 	void     Get_ (MeuRacional_t  const * const me, long int * valorNum, long int * valorDen);
+static 	void     Get_ (MinhaMatriz_t  const * const me,
+					 long int * valorNum,
+					 long int * valorDen);
 
-static 	void     Set_ (MeuRacional_t   * const me, long int valorNum, long int valorDen);
+static 	void     Set_ (MinhaMatriz_t   * const me,
+					 long int valorNum,
+					 long int valorDen);
 
-static 	long int   GetNum_ (MeuRacional_t  const * const me);
+static 	long int   GetNum_ (MinhaMatriz_t  const * const me);
 
-static 	void     SetNum_ (MeuRacional_t   * const me, long int valorNum);
+static 	void     SetNum_ (MinhaMatriz_t   * const me,
+					      long int valorNum);
 
-static 	long int   GetDen_ (MeuRacional_t  const * const me);
+static 	long int   GetDen_ (MinhaMatriz_t  const * const me);
 
-static 	void     SetDen_ (MeuRacional_t   * const me, long int valorDen);
+static 	void     SetDen_ (MinhaMatriz_t   * const me,
+					       long int valorDen);
 
-static  MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me);
+static  MinhaMatriz_pt  Modulo_ (MinhaMatriz_t   const * const me);
 
-static  MeuRacional_pt Ac_Soma_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro);
+static  MinhaMatriz_pt Ac_Soma_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro);
 
-static  MeuRacional_pt Ac_Subt_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro);
+static  MinhaMatriz_pt Ac_Subt_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro);
 
-static  MeuRacional_pt Ac_Mult_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro);
+static  MinhaMatriz_pt Ac_Mult_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro);
 
-static  MeuRacional_pt Ac_Divd_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro);
+static  MinhaMatriz_pt Ac_Divd_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro);
 
  /*---------------------------------------------*
  * implementação do construtor                  *
  * ---------------------------------------------*/
-MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int valorDen)
+MinhaMatriz_pt Racional_constroi (MinhaMatriz_pt  me, long int valorNum,long int valorDen)
 {
 	/* tabela de funções virtuais da classe Numero_t *
 	 * Esta tabela estática será compartilhada por todos os números *
-	 * da classe MeuRacional_t                                        */
+	 * da classe MinhaMatriz_t                                        */
 
     static struct NumeroVtbl const vtbl = {
         &copia_,   //ok
@@ -144,19 +146,19 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
         &destroi_  //ok
      };
 
-         me = (MeuRacional_pt) Num_constroi ((Numero_pt) me);
+         me = (MinhaMatriz_pt) Num_constroi ((Numero_pt) me);
                         /*constroi o Numero_t  */
-                        /* no início de MeuRacional_t  */
+                        /* no início de MinhaMatriz_t  */
 
          me->super.metodo = &vtbl;
-            /* metodo aponta para vtbl de MeuRacional_t */
+            /* metodo aponta para vtbl de MinhaMatriz_t */
             /* as operações do "numero", a partir de agora,     */
             /* são as operações sobre long int                    */
 
      /* Agora, mais uma tabela estática a ser compartilhada pelos     *
-      * "MeuRacional_t": a tabela de interface                          *
+      * "MinhaMatriz_t": a tabela de interface                          *
       * note que a estrutura Interface incorpora os métodos Get e Set */
-     static struct MeuRacional_Interface_st const interface = {
+     static struct MinhaMatriz_Interface_st const interface = {
         &Copia_,     // parece ok
         &Atribui_,   // parece ok
         &Soma_,      // implementada
@@ -181,13 +183,13 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
      };
 
      me->Metodo = &interface;
-            /* metodo aponta para vtbl de MeuRacional_t */
+            /* metodo aponta para vtbl de MinhaMatriz_t */
             /* as operações do "numero", a partir de agora,     */
             /* são as operações sobre long int                    */
 
     /* aloca dinamicamente uma area de memoria para um long int  */
     /* e atribui o endereço de memória alocada para o ponteiro */
-    /* valor que está dentro da estrutura MeuRacional_st         */
+    /* valor que está dentro da estrutura MinhaMatriz_st         */
 	me->valor = (long int*) malloc (2*sizeof(long int));
 
 	if (me->valor == NULL)
@@ -210,47 +212,51 @@ MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int
  /*---------------------------------------------*
  * implementação do set e get                   *
  * ---------------------------------------------*/
-static inline void Get_ (MeuRacional_t  const * const me, long int * ptNum,long int * ptDen)
+ static inline
+void Get_ (MinhaMatriz_t  const * const me, long int * ptNum,long int * ptDen)
+
 {
-	*ptNum = (me->valor[0]);
-	*ptDen = (me->valor[1]);
+	 *ptNum = (me->valor[0]);
+	 *ptDen = (me->valor[1]);
+
 }
 
 
-static inline void Set_ (MeuRacional_t * const me,long int valorNum, long int valorDen)
+static inline void Set_ (MinhaMatriz_t * const me,long int valorNum, long int valorDen)
 {
 	me->valor[0] = valorNum;
 	me->valor[1] = valorDen;
+
 }
 
-static inline long int GetNum_ (MeuRacional_t  const * const me)
+static inline long int GetNum_ (MinhaMatriz_t  const * const me)
 {
 	 return ( (me->valor[0]));
 
 }
 
 
-static inline void SetNum_ (MeuRacional_t * const me,long int valorNum)
+static inline void SetNum_ (MinhaMatriz_t * const me,long int valorNum)
 {
 	me->valor[0] = valorNum;
 }
 
 
-static inline long int  GetDen_ (MeuRacional_t  const * const me)
+static inline long int  GetDen_ (MinhaMatriz_t  const * const me)
 {
 	 return (me->valor[1]);
 }
 
 
-static inline void SetDen_ (MeuRacional_t * const me,long int valorDen)
+static inline void SetDen_ (MinhaMatriz_t * const me,long int valorDen)
 {
 	me->valor[1] = valorDen;
 }
 
 
-static MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me)
+static MinhaMatriz_pt  Modulo_ (MinhaMatriz_t   const * const me)
 {
-   MeuRacional_pt resposta = NULL;
+   MinhaMatriz_pt resposta = NULL;
    resposta = Racional_constroi(resposta,labs(GetNum_(me)),labs(GetDen_(me)));
    return(resposta);
 }
@@ -259,9 +265,9 @@ static MeuRacional_pt  Modulo_ (MeuRacional_t   const * const me)
 /*------------------------------------------------------*
  * IMPLEMENTAÇÃO DAS FUNÇÕES VIRTUAIS           *
  * -----------------------------------------------------*/
-static inline MeuRacional_pt Copia_ (MeuRacional_t const * const  me)
+static inline MinhaMatriz_pt Copia_ (MinhaMatriz_t const * const  me)
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          copia_ ((Numero_t *) me));
 }
 
@@ -270,18 +276,18 @@ static Numero_pt copia_ (Numero_t const * const  me)
 	assert (me != NULL);
 	Numero_pt outro = NULL;
 	outro = (Numero_pt) Racional_constroi
-							((MeuRacional_pt) outro,
-							  GetNum_((MeuRacional_pt) me),
-							  GetDen_((MeuRacional_pt) me));
+							((MinhaMatriz_pt) outro,
+							  GetNum_((MinhaMatriz_pt) me),
+							  GetDen_((MinhaMatriz_pt) me));
 	return outro;
 }
 
 /*-----------------------------------------------------------------*/
 static inline
-MeuRacional_pt Atribui_(MeuRacional_t const * const me,
-					  MeuRacional_t       * const  outro )
+MinhaMatriz_pt Atribui_(MinhaMatriz_t const * const me,
+					  MinhaMatriz_t       * const  outro )
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          atribui_ ((Numero_t*) me,
 								 (Numero_t*) outro));
 }
@@ -290,19 +296,19 @@ static
  Numero_pt atribui_ (Numero_t const * const  me,
 						  Numero_t       * const  outro)
  {
-	 Set_( (MeuRacional_pt) outro,
-	       GetNum_((MeuRacional_pt) me),
-	       GetDen_ ( (MeuRacional_pt) me) );
+	 Set_( (MinhaMatriz_pt) outro,
+	       GetNum_((MinhaMatriz_pt) me),
+	       GetDen_ ( (MinhaMatriz_pt) me) );
 
 	 return (Numero_pt) outro;
  }
 /*-----------------------------------------------------------------*/
 static inline
-MeuRacional_pt Soma_  ( MeuRacional_t const * const  me,
-						   MeuRacional_t const * const  outro,
-						   MeuRacional_t       * const  res)
+MinhaMatriz_pt Soma_  ( MinhaMatriz_t const * const  me,
+						   MinhaMatriz_t const * const  outro,
+						   MinhaMatriz_t       * const  res)
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          soma_ ((Numero_t*) me,
 					 (Numero_t*) outro,
 					 (Numero_t*) res));
@@ -316,8 +322,8 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 	long int num=1;
 	long int mmc=1;
 	long int x = 1;
-	long int den1 = labs(GetDen_((MeuRacional_pt)me));
-	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
+	long int den1 = labs(GetDen_((MinhaMatriz_pt)me));
+	long int den2 = labs(GetDen_((MinhaMatriz_pt)outro));
 
 	
 	if (den2 > den1){
@@ -338,22 +344,22 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 	
 	mmc = x;
 	den = mmc;
-	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) + 
-			(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
+	num = (GetNum_((MinhaMatriz_pt)me)*mmc/GetDen_((MinhaMatriz_pt)me)) + 
+			(GetNum_((MinhaMatriz_pt)outro)*mmc/(GetDen_((MinhaMatriz_pt)outro)));
 	
-	Set_((MeuRacional_pt)res,num,den);
+	Set_((MinhaMatriz_pt)res,num,den);
 
-	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
+	return (Numero_pt) Simplifica_((MinhaMatriz_pt)res);
 }
 
 
 /*-----------------------------------------------------------------*/
 static inline
-MeuRacional_pt Subt_  (      MeuRacional_t const * const  me,
-						   MeuRacional_t const * const  outro,
-						   MeuRacional_t       * const  res)
+MinhaMatriz_pt Subt_  (      MinhaMatriz_t const * const  me,
+						   MinhaMatriz_t const * const  outro,
+						   MinhaMatriz_t       * const  res)
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          subt_ ((Numero_t*) me,
 							  (Numero_t*) outro,
 							  (Numero_t*) res));
@@ -366,8 +372,8 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 	long int num;
 	long int den;
 	long int x = 1;
-	long int den1 = labs(GetDen_((MeuRacional_pt)me));
-	long int den2 = labs(GetDen_((MeuRacional_pt)outro));
+	long int den1 = labs(GetDen_((MinhaMatriz_pt)me));
+	long int den2 = labs(GetDen_((MinhaMatriz_pt)outro));
 
 	
 	if (den2 > den1){
@@ -387,22 +393,22 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 	mmc = x;
 	den = mmc;
 
-	num = (GetNum_((MeuRacional_pt)me)*mmc/GetDen_((MeuRacional_pt)me)) - 
-			(GetNum_((MeuRacional_pt)outro)*mmc/(GetDen_((MeuRacional_pt)outro)));
+	num = (GetNum_((MinhaMatriz_pt)me)*mmc/GetDen_((MinhaMatriz_pt)me)) - 
+			(GetNum_((MinhaMatriz_pt)outro)*mmc/(GetDen_((MinhaMatriz_pt)outro)));
 	
 	
-	Set_((MeuRacional_pt)res,num,den);
+	Set_((MinhaMatriz_pt)res,num,den);
 
-	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
+	return (Numero_pt) Simplifica_((MinhaMatriz_pt)res);
 }
 
 /*-----------------------------------------------------------------*/
 static inline
-MeuRacional_pt Mult_  ( MeuRacional_t const * const  me,
-						   MeuRacional_t const * const  outro,
-						   MeuRacional_t       * const  res)
+MinhaMatriz_pt Mult_  ( MinhaMatriz_t const * const  me,
+						   MinhaMatriz_t const * const  outro,
+						   MinhaMatriz_t       * const  res)
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          mult_ ((Numero_t*) me,
 			         (Numero_t*) outro,
 			         (Numero_t*) res));
@@ -412,8 +418,8 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
 								Numero_t const * const  outro,
 								Numero_t       * const  res)
 {
-    Set_((MeuRacional_pt)res,GetNum_((MeuRacional_pt)me) * GetNum_((MeuRacional_pt)outro),
-							 GetDen_((MeuRacional_pt)me) * GetDen_((MeuRacional_pt)outro));
+    Set_((MinhaMatriz_pt)res,GetNum_((MinhaMatriz_pt)me) * GetNum_((MinhaMatriz_pt)outro),
+							 GetDen_((MinhaMatriz_pt)me) * GetDen_((MinhaMatriz_pt)outro));
 
 	
 	return ( (Numero_pt) res);
@@ -421,11 +427,11 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
 
 /*-----------------------------------------------------------------*/
 static inline
-MeuRacional_pt Divd_  ( MeuRacional_t const * const  me,
-						   MeuRacional_t const * const  outro,
-						   MeuRacional_t       * const  res)
+MinhaMatriz_pt Divd_  ( MinhaMatriz_t const * const  me,
+						   MinhaMatriz_t const * const  outro,
+						   MinhaMatriz_t       * const  res)
 {
-	return ( (MeuRacional_pt)
+	return ( (MinhaMatriz_pt)
 	          divd_ ((Numero_t*) me,
                      (Numero_t*) outro,
                      (Numero_t*) res));
@@ -435,76 +441,76 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 								Numero_t const * const  outro,
 								Numero_t       * const  res)
 {
-	Set_((MeuRacional_pt)res,GetNum_((MeuRacional_pt)me) * GetDen_((MeuRacional_pt)outro),
-							 GetDen_((MeuRacional_pt)me) * GetNum_((MeuRacional_pt)outro));
+	Set_((MinhaMatriz_pt)res,GetNum_((MinhaMatriz_pt)me) * GetDen_((MinhaMatriz_pt)outro),
+							 GetDen_((MinhaMatriz_pt)me) * GetNum_((MinhaMatriz_pt)outro));
 
 	return ( (Numero_pt) res);
 }
 /*-----------------------------------------------------------------*/
-static  MeuRacional_pt Ac_Soma_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro)
+static  MinhaMatriz_pt Ac_Soma_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro)
 {
-	return((MeuRacional_pt)ac_soma_((Numero_t*)me ,(Numero_t*)outro));
+	return((MinhaMatriz_pt)ac_soma_((Numero_t*)me ,(Numero_t*)outro));
 }
 
 static  Numero_pt ac_soma_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
-	return((Numero_pt)Soma_((MeuRacional_pt)me,
-							(MeuRacional_pt)outro,
-							(MeuRacional_pt)me));
+	return((Numero_pt)Soma_((MinhaMatriz_pt)me,
+							(MinhaMatriz_pt)outro,
+							(MinhaMatriz_pt)me));
 }
 
 
 /*-----------------------------------------------------------------*/
-static  MeuRacional_pt Ac_Subt_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro)
+static  MinhaMatriz_pt Ac_Subt_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro)
 {
-	return((MeuRacional_pt)ac_subt_((Numero_t*)me ,(Numero_t*)outro));
+	return((MinhaMatriz_pt)ac_subt_((Numero_t*)me ,(Numero_t*)outro));
 }
 
 static  Numero_pt ac_subt_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
-	return((Numero_pt)Subt_((MeuRacional_pt)me,
-							(MeuRacional_pt)outro,
-							(MeuRacional_pt)me));
+	return((Numero_pt)Subt_((MinhaMatriz_pt)me,
+							(MinhaMatriz_pt)outro,
+							(MinhaMatriz_pt)me));
 }
 
 /*-----------------------------------------------------------------*/
-static  MeuRacional_pt Ac_Mult_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro)
+static  MinhaMatriz_pt Ac_Mult_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro)
 {
-	return((MeuRacional_pt)ac_mult_((Numero_t*)me ,(Numero_t*)outro));
+	return((MinhaMatriz_pt)ac_mult_((Numero_t*)me ,(Numero_t*)outro));
 }
 
 static  Numero_pt ac_mult_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
-	return((Numero_pt)Mult_((MeuRacional_pt)me,
-							(MeuRacional_pt)outro,
-							(MeuRacional_pt)me));
+	return((Numero_pt)Mult_((MinhaMatriz_pt)me,
+							(MinhaMatriz_pt)outro,
+							(MinhaMatriz_pt)me));
 }
 
 /*-----------------------------------------------------------------*/
-static  MeuRacional_pt Ac_Divd_ (MeuRacional_t       * const  me,
-								 MeuRacional_t const * const  outro)
+static  MinhaMatriz_pt Ac_Divd_ (MinhaMatriz_t       * const  me,
+								 MinhaMatriz_t const * const  outro)
 {
-	return((MeuRacional_pt)ac_divd_((Numero_t*)me ,(Numero_t*)outro));
+	return((MinhaMatriz_pt)ac_divd_((Numero_t*)me ,(Numero_t*)outro));
 }
 
 static  Numero_pt ac_divd_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
-	return((Numero_pt)Divd_((MeuRacional_pt)me,
-							(MeuRacional_pt)outro,
-							(MeuRacional_pt)me));
+	return((Numero_pt)Divd_((MinhaMatriz_pt)me,
+							(MinhaMatriz_pt)outro,
+							(MinhaMatriz_pt)me));
 }
 
 /*-----------------------------------------------------------------*/
 static inline
-int Compara_  ( MeuRacional_t const * const  me,
-				MeuRacional_t const * const  outro)
+int Compara_  ( MinhaMatriz_t const * const  me,
+				MinhaMatriz_t const * const  outro)
 {
 	return ( compara_ ((Numero_t*) me,
                        (Numero_t*) outro));
@@ -514,17 +520,17 @@ static  int	compara_ 	(Numero_t const * const  me,
                          Numero_t const * const  outro)
 {
 	//estabelecendo que os numeros devem ser comparados simplificados
-	Numero_pt numero1 = (Numero_pt) Simplifica_((MeuRacional_pt)me);
-    Numero_pt numero2 = (Numero_pt) Simplifica_((MeuRacional_pt)outro);
+	Numero_pt numero1 = (Numero_pt) Simplifica_((MinhaMatriz_pt)me);
+    Numero_pt numero2 = (Numero_pt) Simplifica_((MinhaMatriz_pt)outro);
 
-	numero1 = (Numero_pt)Modulo_((MeuRacional_pt)numero1);
-	numero2 = (Numero_pt)Modulo_((MeuRacional_pt)numero2);
+	numero1 = (Numero_pt)Modulo_((MinhaMatriz_pt)numero1);
+	numero2 = (Numero_pt)Modulo_((MinhaMatriz_pt)numero2);
 
-    double num1 = ((double) GetNum_((MeuRacional_pt) numero1)) / 
-					((double) GetDen_((MeuRacional_pt) numero1));
+    double num1 = ((double) GetNum_((MinhaMatriz_pt) numero1)) / 
+					((double) GetDen_((MinhaMatriz_pt) numero1));
 
-	double num2 = ((double) GetNum_((MeuRacional_pt) numero2)) / 
-					((double) GetDen_((MeuRacional_pt) numero2));
+	double num2 = ((double) GetNum_((MinhaMatriz_pt) numero2)) / 
+					((double) GetDen_((MinhaMatriz_pt) numero2));
 
 	if(num1>num2){
 		return 1;
@@ -537,7 +543,7 @@ static  int	compara_ 	(Numero_t const * const  me,
 
 /*-----------------------------------------------------------------*/
 static inline
-char * Imprime_  ( MeuRacional_t const * const  me)
+char * Imprime_  ( MinhaMatriz_t const * const  me)
 {
 	return ( imprime_ ((Numero_t*) me));
 }
@@ -545,10 +551,10 @@ static  char * imprime_  (Numero_t const * const  me)
 {
     static char buffer[50];
 	buffer[0] = '\n';
-    if(GetNum_((MeuRacional_pt) me)> 0){   
-		sprintf(buffer, "%ld/%ld",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me)) ;
+    if(GetNum_((MinhaMatriz_pt) me)> 0){   
+		sprintf(buffer, "%ld/%ld",GetNum_((MinhaMatriz_pt) me),GetDen_((MinhaMatriz_pt) me)) ;
 	}
-	else sprintf(buffer, "-%ld/%ld",GetNum_((MeuRacional_pt) me),GetDen_((MeuRacional_pt) me));
+	else sprintf(buffer, "-%ld/%ld",GetNum_((MinhaMatriz_pt) me),GetDen_((MinhaMatriz_pt) me));
 	
 	return buffer;
 }
@@ -559,19 +565,19 @@ static  char * imprime_  (Numero_t const * const  me)
  * ---------------------------------------------*/
  /*-----------------------------------------------------------------*/
 static inline
-void Destroi_  ( MeuRacional_t  *   me)
+void Destroi_  ( MinhaMatriz_t  *   me)
 {
 	  destroi_ ((Numero_t *)  me);
 }
 static void destroi_ (Numero_t *  me)
 {
 	/* primeiro destroi o valor long int */
-	free (((MeuRacional_pt) me)->valor);
+	free (((MinhaMatriz_pt) me)->valor);
 	/*... e só agora destroi-se o número virtual da classe base */
 	free ((Numero_t *) me);
 }
  /*-----------------------------------------------------------------*/
-static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
+static inline MinhaMatriz_pt  Simplifica_ (MinhaMatriz_pt me){
 	long int den = labs(GetDen_(me));
 	long int num = labs(GetNum_(me));
 	long int n = GetNum_(me);
@@ -595,7 +601,7 @@ static inline MeuRacional_pt  Simplifica_ (MeuRacional_pt me){
 		den = den/x;
 		num = num/x;
 	}
-	static MeuRacional_pt resposta;
+	static MinhaMatriz_pt resposta;
 	
 	
 	if(n < 0) {
