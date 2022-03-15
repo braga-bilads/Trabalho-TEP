@@ -267,8 +267,7 @@ static Numero_pt atribui_ (Numero_t const * const  me, Numero_t * const  outro)
 	return (Numero_pt) outro;
 }
 /*-----------------------------------------------------------------*/
-static inline
-Matriz_pt Soma_  ( Matriz_t const * const  me,
+static inline Matriz_pt Soma_  ( Matriz_t const * const  me,
 						   Matriz_t const * const  outro,
 						   Matriz_t       * const  res)
 {
