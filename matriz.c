@@ -11,15 +11,15 @@
 static  Numero_pt copia_ (Numero_t const * const  me);
 
 static  Numero_pt atribui_ (Numero_t const * const  me,
-							         Numero_t       * const  outro) ;
+							Numero_t       * const  outro) ;
 
 static  Numero_pt soma_  (Numero_t const * const  me,
-								   Numero_t const * const  outro,
-							       Numero_t       * const  res);
+						  Numero_t const * const  outro,
+						  Numero_t       * const  res);
 
 static  Numero_pt subt_  (	Numero_t const * const  me,
-									Numero_t const * const  outro,
-									Numero_t       * const  res);
+						    Numero_t const * const  outro,
+							Numero_t       * const  res);
 
 static  Numero_pt mult_  ( Numero_t const * const  me,
 									Numero_t const * const  outro,
@@ -84,11 +84,7 @@ static  void        Destroi_ (MinhaMatriz_t  *   me);
 
 static  MinhaMatriz_pt  Simplifica_ (MinhaMatriz_pt me);
 
-/* ------------------------------------------------------- *
- * funções que são típicas do numero Racional, mas não são *
- * funcoes da classe virtual básica número                 *
- * protótipos das funçoes get e set, por exemplo           *
- *---------------------------------------------------------*/
+
 static 	void     Get_ (MinhaMatriz_t  const * const me,
 					 long int * valorNum,
 					 long int * valorDen);
@@ -97,15 +93,6 @@ static 	void     Set_ (MinhaMatriz_t   * const me,
 					 long int valorNum,
 					 long int valorDen);
 
-static 	long int   GetNum_ (MinhaMatriz_t  const * const me);
-
-static 	void     SetNum_ (MinhaMatriz_t   * const me,
-					      long int valorNum);
-
-static 	long int   GetDen_ (MinhaMatriz_t  const * const me);
-
-static 	void     SetDen_ (MinhaMatriz_t   * const me,
-					       long int valorDen);
 
 static  MinhaMatriz_pt  Modulo_ (MinhaMatriz_t   const * const me);
 
@@ -122,7 +109,7 @@ static  MinhaMatriz_pt Ac_Divd_ (MinhaMatriz_t       * const  me,
 								 MinhaMatriz_t const * const  outro);
 
  /*---------------------------------------------*
- * implementação do construtor                  *
+ * 		implementação do construtor             *
  * ---------------------------------------------*/
 MinhaMatriz_pt Racional_constroi (MinhaMatriz_pt  me, long int valorNum,long int valorDen)
 {
@@ -146,19 +133,14 @@ MinhaMatriz_pt Racional_constroi (MinhaMatriz_pt  me, long int valorNum,long int
         &destroi_  //ok
      };
 
-         me = (MinhaMatriz_pt) Num_constroi ((Numero_pt) me);
-                        /*constroi o Numero_t  */
+        me = (MinhaMatriz_pt) Num_constroi ((Numero_pt) me);
+                        	/*constroi o Numero_t  */
                         /* no início de MinhaMatriz_t  */
 
-         me->super.metodo = &vtbl;
-            /* metodo aponta para vtbl de MinhaMatriz_t */
-            /* as operações do "numero", a partir de agora,     */
-            /* são as operações sobre long int                    */
-
-     /* Agora, mais uma tabela estática a ser compartilhada pelos     *
-      * "MinhaMatriz_t": a tabela de interface                          *
-      * note que a estrutura Interface incorpora os métodos Get e Set */
-     static struct MinhaMatriz_Interface_st const interface = {
+        me->super.metodo = &vtbl;
+            
+		
+    static struct MinhaMatriz_Interface_st const interface = {
         &Copia_,     // parece ok
         &Atribui_,   // parece ok
         &Soma_,      // implementada
@@ -180,17 +162,11 @@ MinhaMatriz_pt Racional_constroi (MinhaMatriz_pt  me, long int valorNum,long int
         &SetDen_,    // parece ok
         &Modulo_,    // parece ok
 		&Simplifica_ // implementada
-     };
+    };
 
-     me->Metodo = &interface;
-            /* metodo aponta para vtbl de MinhaMatriz_t */
-            /* as operações do "numero", a partir de agora,     */
-            /* são as operações sobre long int                    */
-
-    /* aloca dinamicamente uma area de memoria para um long int  */
-    /* e atribui o endereço de memória alocada para o ponteiro */
-    /* valor que está dentro da estrutura MinhaMatriz_st         */
-	me->valor = (long int*) malloc (2*sizeof(long int));
+    me->Metodo = &interface;
+    
+	
 
 	if (me->valor == NULL)
 	{	/*erro!!! não conseguiu alocar */
@@ -199,10 +175,8 @@ MinhaMatriz_pt Racional_constroi (MinhaMatriz_pt  me, long int valorNum,long int
 	    exit (1);
 	}
 
-	/* copia o long int passado como parâmetro */
-    /* no endereco de memoria recém alocado  */
-     me->valor[0] = valorNum;
-     me->valor[1] = valorDen;
+	
+     
 
      return (me);
 

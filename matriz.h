@@ -31,32 +31,32 @@ struct Matriz_Interface_st {
 							 Matriz_t       * const  outro);
 
     Matriz_pt (*soma)	(Matriz_t const * const  me,
-							 Matriz_t const * const  outro,
-							 Matriz_t       * const res);
+						 Matriz_t const * const  outro,
+						 Matriz_t       * const res);
 
     Matriz_pt (*subt)	(Matriz_t const * const  me,
-							 Matriz_t const * const  outro,
-							 Matriz_t       * const res);
+						 Matriz_t const * const  outro,
+						 Matriz_t       * const res);
 
     Matriz_pt (*mult)	(Matriz_t const * const  me,
-							 Matriz_t const * const  outro,
-							Matriz_t        * const res);
+						 Matriz_t const * const  outro,
+						 Matriz_t        * const res);
 
     Matriz_pt (*divd)	(Matriz_t const * const  me,
-							 Matriz_t const * const  outro,
-							 Matriz_t       * const res);
+						 Matriz_t const * const  outro,
+						 Matriz_t       * const res);
 
     Matriz_pt (*ac_soma)	(Matriz_t       * const  me,
-							     Matriz_t const * const  outro);
+							 Matriz_t const * const  outro);
 
     Matriz_pt (*ac_subt)	(Matriz_t       * const  me,
-							     Matriz_t const * const outro);
+							 Matriz_t const * const outro);
 
     Matriz_pt (*ac_mult)	(Matriz_t       * const  me,
-							     Matriz_t const * const outro);
+							 Matriz_t const * const outro);
 
     Matriz_pt (*ac_divd)	(Matriz_t        * const  me,
-							     Matriz_t const * const outro);
+							 Matriz_t const * const outro);
 
     int			(*compara)	(Matriz_t const * const  me, Matriz_t const * const  outro);
 
@@ -64,25 +64,17 @@ struct Matriz_Interface_st {
 
     void        (*destroi)  (Matriz_t       *        me);
     
-    void       (*get_at) (Matriz_t  const * const me, int *posicao,double *valor);
+	double     (*get) (Matriz_t  const * const me, int posicao[2]);
 
-	double     (*get) (Matriz_t  const * const me);
+	void   	   (*set ) (Matriz_t * const me, int posicao[2], double valor);
 
-	void   	   (*set ) (Matriz_t * const me, int * posicao, double valor);
-
-    Matriz_pt  (*)
+   
 
     /*------------------------------------------------------*/
 };
 
 typedef struct Matriz_Interface_st *Matriz_Interface_pt;
 
-
-/* protótipo do construtor   */
-Matriz_pt Racional_constroi (Matriz_pt  me,
-								  long int valorNum,
-								  long int valorDen);
-
-
+Matriz_pt Matriz_2D_criar (Matriz_pt  me,int tam[2],double *valores);
 
 #endif /* Matriz_H */
