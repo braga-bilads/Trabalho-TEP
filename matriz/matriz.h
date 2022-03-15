@@ -75,6 +75,6 @@ struct Matriz_Interface_st {
 
 typedef struct Matriz_Interface_st *Matriz_Interface_pt;
 
-Matriz_pt Matriz_2D_criar (Matriz_pt  me,int tam[2],double *valores);
+Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int tam[2],double *valores);
 
 #endif /* Matriz_H */
