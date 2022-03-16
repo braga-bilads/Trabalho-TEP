@@ -140,13 +140,13 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
 		
     static struct Matriz_Interface_st const interface = {
         &Copia_,     // ok
-        &Atribui_,   //
-        &Soma_,      //
-        &Subt_,      //
+        &Atribui_,   // ok
+        &Soma_,      // ok
+        &Subt_,      // ok
         &Mult_,      //
         &Divd_,		 //
-		&Ac_Soma_,	 //
-		&Ac_Subt_,	 //
+		&Ac_Soma_,	 // ok
+		&Ac_Subt_,	 // ok
 		&Ac_Mult_,   // 
 		&Ac_Divd_,   //  
         &Compara_,   //
@@ -268,8 +268,8 @@ static Numero_pt atribui_ (Numero_t const * const  me, Numero_t * const  outro)
 }
 /*-----------------------------------------------------------------*/
 static inline Matriz_pt Soma_  ( Matriz_t const * const  me,
-						   Matriz_t const * const  outro,
-						   Matriz_t       * const  res)
+						   		 Matriz_t const * const  outro,
+						  		 Matriz_t       * const  res)
 {
 	return ( (Matriz_pt)
 	          soma_ ((Numero_t*) me,
@@ -281,8 +281,19 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 						   Numero_t const * const  outro,
 						   Numero_t       * const  res)
 {
-	
-	
+	if(me->tam[0] != outro->tam[0] || me->tam[1] != outro->tam[1] || 
+	   me->tam[0] != res->tam[0]   || me->tam[1] != res->tam[1]    )
+	{
+		printf("ERRO NA SOMA: AS MATRIZES PRECISAM TER O MESMO NUMERO DE LINHAS E COLUNAS\n");
+		return(res);
+	}
+	for (int i = 0; i < me->tam[0]; i++)
+	{
+		for (int j = 0; j < me->tam[1]; j++)
+		{
+			Set_(res,[i,j],me->mat[i][j] + outro[i][j]);
+		}
+	}
 }
 
 
@@ -301,38 +312,19 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 								    Numero_t const * const  outro,
 								    Numero_t       * const  res)
 {	
-	long int mmc;
-	long int num;
-	long int den;
-	long int x = 1;
-	long int den1 = labs(GetDen_((Matriz_pt)me));
-	long int den2 = labs(GetDen_((Matriz_pt)outro));
-
-	
-	if (den2 > den1){
-		x = den2;
-		
-	} else {
-		x = den1;
+	if(me->tam[0] != outro->tam[0] || me->tam[1] != outro->tam[1] || 
+	   me->tam[0] != res->tam[0]   || me->tam[1] != res->tam[1]    )
+	{
+		printf("ERRO NA SOMA: AS MATRIZES PRECISAM TER O MESMO NUMERO DE LINHAS E COLUNAS\n");
+		return(res);
 	}
-		
-	while (x > 1) {
-		if (x % den2 == 0 && x % den1 == 0)
-		break;
-		x++;
+	for (int i = 0; i < me->tam[0]; i++)
+	{
+		for (int j = 0; j < me->tam[1]; j++)
+		{
+			Set_(res,[i,j],me->mat[i][j] - outro[i][j]);
+		}
 	}
-	
-
-	mmc = x;
-	den = mmc;
-
-	num = (GetNum_((Matriz_pt)me)*mmc/GetDen_((Matriz_pt)me)) - 
-			(GetNum_((Matriz_pt)outro)*mmc/(GetDen_((Matriz_pt)outro)));
-	
-	
-	Set_((Matriz_pt)res,num,den);
-
-	return (Numero_pt) Simplifica_((Matriz_pt)res);
 }
 
 /*-----------------------------------------------------------------*/
