@@ -85,9 +85,7 @@ static  void        Destroi_ (Matriz_t  *   me);
 static  Matriz_pt  Simplifica_ (Matriz_pt me);
 
 
-static 	void     Get_ (Matriz_t  const * const me,
-					 long int * valorNum,
-					 long int * valorDen);
+static  double Get_ (Matriz_t  const * const me,static int *posicao)
 
 static 	void     Set_ (Matriz_t   * const me,
 					 long int valorNum,
@@ -143,11 +141,11 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
         &Atribui_,   // ok
         &Soma_,      // ok
         &Subt_,      // ok
-        &Mult_,      //
+        &Mult_,      // ok
         &Divd_,		 //
 		&Ac_Soma_,	 // ok
 		&Ac_Subt_,	 // ok
-		&Ac_Mult_,   // 
+		&Ac_Mult_,   // ok
 		&Ac_Divd_,   //  
         &Compara_,   //
         &Imprime_,   //
@@ -356,7 +354,7 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
       		
 			for(int i=0; i<me->tam[0] ; i++) {
 
-				somapro += me->mat[linha][i] * outro->mat[i][coluna];
+				somapro += Get_(me,[linha,i]) * Get_(outro,[i,coluna]);
 
 			}
       		
@@ -512,7 +510,7 @@ static Matriz_pt  Modulo_ (Matriz_t  * me)
    {
 	   for (int j = 0; j < me->tam[1]; j++)
 	   {
-		   me->mat[i][j] = fabs(Get_(me),[i,j]);
+		   Set_(me,[i,j],fabs(Get_(me),[i,j]));
 	   }
 	   
    }
@@ -523,9 +521,13 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 }
 
 static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
-	for (int i = 0; i < ; i++)
+	for (int i = 0; i < me->tam[0]; i++)
 	{
-		/* code */
+		for (j = 0; j < me->tam[1]; j++)
+		{
+			Set_(me,[i,j],Get_(me,[i,j])* a);
+		}
+		
 	}
 	
 }
