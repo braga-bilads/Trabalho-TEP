@@ -152,6 +152,11 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
         &Destroi_,   //
         &Get_,       // ok
         &Set_,       // ok
+		&GetValores_,
+		&GetTam_,     
+		&Modulo_,
+		&MultPorEscalar,
+		&Transpor_
     };
 
     me->Metodo = &interface;
