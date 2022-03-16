@@ -291,7 +291,7 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 	{
 		for (int j = 0; j < me->tam[1]; j++)
 		{
-			Set_(res,[i,j],me->mat[i][j] + outro[i][j]);
+			Set_((Matriz_t *)res,[i,j],me->mat[i][j] + outro[i][j]);
 		}
 	}
 }
@@ -322,7 +322,7 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 	{
 		for (int j = 0; j < me->tam[1]; j++)
 		{
-			Set_(res,[i,j],me->mat[i][j] - outro[i][j]);
+			Set_((Matriz_t *)res,[i,j],me->mat[i][j] - outro[i][j]);
 		}
 	}
 }
@@ -340,11 +340,29 @@ Matriz_pt Mult_  ( Matriz_t const * const  me,
 }
 
 static  Numero_pt mult_  ( Numero_t const * const  me,
-								Numero_t const * const  outro,
-								Numero_t       * const  res)
+						   Numero_t const * const  outro,
+						   Numero_t       * const  res)
 {
-    Set_((Matriz_pt)res,GetNum_((Matriz_pt)me) * GetNum_((Matriz_pt)outro),
-							 GetDen_((Matriz_pt)me) * GetDen_((Matriz_pt)outro));
+    if (me->tam[0] != outro->tam[1] || me->tam[0] != res->tam[0] || outro->tam[1] != res->tam[1])
+	{
+		printf("ERRO: MATRIZES NÂO COMPATIVEIS\n");
+		return res;
+	}
+	for(int linha=0; linha < me->tam[0] ; linha++){
+    	
+		for(int coluna=0; coluna < M2C; coluna++){
+      		
+			int somapro=0;
+      		
+			for(int i=0; i<me->tam[0] ; i++) {
+
+				somapro += me->mat[linha][i] * outro->mat[i][coluna];
+
+			}
+      		
+			Set_((Matriz_t *)res,[linha,coluna],somapro);
+    	}
+	}
 
 	
 	return ( (Numero_pt) res);
@@ -366,8 +384,7 @@ static  Numero_pt divd_  (	Numero_t const * const  me,
 								Numero_t const * const  outro,
 								Numero_t       * const  res)
 {
-	Set_((Matriz_pt)res,GetNum_((Matriz_pt)me) * GetDen_((Matriz_pt)outro),
-							 GetDen_((Matriz_pt)me) * GetNum_((Matriz_pt)outro));
+	Mult_((Matriz_t*)me,Transpor_((Matriz_t*)outro),(Matriz_t*) res);
 
 	return ( (Numero_pt) res);
 }
@@ -412,9 +429,7 @@ static  Matriz_pt Ac_Mult_ (Matriz_t       * const  me,
 static  Numero_pt ac_mult_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
-	return((Numero_pt)Mult_((Matriz_pt)me,
-							(Matriz_pt)outro,
-							(Matriz_pt)me));
+	return((Numero_pt)Mult_((Matriz_pt)me, (Matriz_pt)outro , (Matriz_pt)me));
 }
 
 /*-----------------------------------------------------------------*/
@@ -428,7 +443,7 @@ static  Numero_pt ac_divd_ (Numero_t       * const  me,
 									 Numero_t const * const  outro)
 {
 	return((Numero_pt)Divd_((Matriz_pt)me,
-							(Matriz_pt)outro,
+							Transpor_((Matriz_pt)outro),
 							(Matriz_pt)me));
 }
 
@@ -444,26 +459,7 @@ int Compara_  ( Matriz_t const * const  me,
 static  int	compara_ 	(Numero_t const * const  me,
                          Numero_t const * const  outro)
 {
-	//estabelecendo que os numeros devem ser comparados simplificados
-	Numero_pt numero1 = (Numero_pt) Simplifica_((Matriz_pt)me);
-    Numero_pt numero2 = (Numero_pt) Simplifica_((Matriz_pt)outro);
-
-	numero1 = (Numero_pt)Modulo_((Matriz_pt)numero1);
-	numero2 = (Numero_pt)Modulo_((Matriz_pt)numero2);
-
-    double num1 = ((double) GetNum_((Matriz_pt) numero1)) / 
-					((double) GetDen_((Matriz_pt) numero1));
-
-	double num2 = ((double) GetNum_((Matriz_pt) numero2)) / 
-					((double) GetDen_((Matriz_pt) numero2));
-
-	if(num1>num2){
-		return 1;
-	}
-	else if(num2>num1){
-		return -1;
-	}
-	return 0;
+	
 }
 
 /*-----------------------------------------------------------------*/
@@ -476,10 +472,7 @@ static  char * imprime_  (Numero_t const * const  me)
 {
     static char buffer[50];
 	buffer[0] = '\n';
-    if(GetNum_((Matriz_pt) me)> 0){   
-		sprintf(buffer, "%ld/%ld",GetNum_((Matriz_pt) me),GetDen_((Matriz_pt) me)) ;
-	}
-	else sprintf(buffer, "-%ld/%ld",GetNum_((Matriz_pt) me),GetDen_((Matriz_pt) me));
+    
 	
 	return buffer;
 }
@@ -513,7 +506,7 @@ static void destroi_ (Numero_t *  me)
 }
  /*-----------------------------------------------------------------*/
 /*função adicional de Modulo (deixa a matriz com todos as posições > 0)*/
-static Matriz_pt  Modulo_ (Matriz_t   const * const me)
+static Matriz_pt  Modulo_ (Matriz_t  * me)
 {
    for ( int i = 0; i < me->tam[0]; i++)
    {
@@ -524,4 +517,15 @@ static Matriz_pt  Modulo_ (Matriz_t   const * const me)
 	   
    }
    return me;
+}
+static Matriz_pt Transpor_ (Matriz_t * me){
+
+}
+
+static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
+	for (int i = 0; i < ; i++)
+	{
+		/* code */
+	}
+	
 }
