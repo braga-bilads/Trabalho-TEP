@@ -517,7 +517,52 @@ static Matriz_pt  Modulo_ (Matriz_t  * me)
    return me;
 }
 static Matriz_pt Transpor_ (Matriz_t * me){
+	unsigned int tamlinhas0 = me->tam[0];
+	unsigned int tamcolunas0 = me->tam[1];
 
+	if(tamcolunas0 != tamlinhas0){
+		if (tamlinhas0 < tamcolunas0)
+		{
+			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
+
+			for ( j = 0; j < tamcolunas0; j++)
+			{
+				for ( i = 0; i < tamlinhas0; i++)
+				{
+					me->mat[j][i] = me->mat[i][j];
+				}
+
+			}
+			
+
+			for (int i = 0; i < tamlinhas0; i++)
+			{
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double))
+			}
+		}
+		else{
+			for (int i = 0; i < tamlinhas0; i++)
+			{
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double))
+			}
+			
+			for ( j = 0; j < colunas0; j++)
+			{
+				for ( i = 0; i < tamlinhas0; i++)
+				{
+					me->mat[j][i] = me->mat[i][j];
+				}
+
+			}
+
+			me->mat = (double**)realloc(me->mat,colunas0*sizeof(double*));
+		} 
+	}
+
+	me->tam[0] = tamcolunas0;
+	me->tam[1] = tamlinhas0;
+
+	return me;
 }
 
 static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
