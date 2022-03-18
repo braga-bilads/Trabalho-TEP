@@ -222,13 +222,11 @@ static inline double * GetValores_(Matriz_t * me){
 	return valores;
 }
 
-
-
-
-
 /*------------------------------------------------------*
  * IMPLEMENTAÇÃO DAS FUNÇÕES VIRTUAIS           *
  * -----------------------------------------------------*/
+
+
 static inline Matriz_pt Copia_ (Matriz_t const * const  me)
 {
 	return ( (Matriz_pt)
@@ -466,8 +464,7 @@ static  int	compara_ 	(Numero_t const * const  me,
 }
 
 /*-----------------------------------------------------------------*/
-static inline
-char * Imprime_  ( Matriz_t const * const  me)
+static inline char * Imprime_  ( Matriz_t const * const  me)
 {
 	return ( imprime_ ((Numero_t*) me));
 }
@@ -508,7 +505,7 @@ static void destroi_ (Numero_t *  me)
 	free(me->tam); 
 }
  /*-----------------------------------------------------------------*/
-/*função adicional de Modulo (deixa a matriz com todos as posições > 0)*/
+/*Modulo (deixa a matriz com todos as posições > 0)*/
 static Matriz_pt  Modulo_ (Matriz_t  * me)
 {
    for ( int i = 0; i < me->tam[0]; i++)
@@ -521,6 +518,7 @@ static Matriz_pt  Modulo_ (Matriz_t  * me)
    }
    return me;
 }
+// Transpôe a Matriz
 static Matriz_pt Transpor_ (Matriz_t * me){
 	unsigned int tamlinhas0 = me->tam[0];
 	unsigned int tamcolunas0 = me->tam[1];
@@ -551,9 +549,9 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double))
 			}
 			
-			for ( j = 0; j < colunas0; j++)
+			for ( j = 0; j < tamlinhas0; j++)
 			{
-				for ( i = 0; i < tamlinhas0; i++)
+				for ( i = 0; i < tamcolunas0; i++)
 				{
 					me->mat[j][i] = me->mat[i][j];
 				}
@@ -569,7 +567,7 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 
 	return me;
 }
-
+//
 static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
@@ -580,4 +578,68 @@ static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 		
 	}
 	
+}
+
+static Matriz_pt Resize_ (Matriz_t * me, unsigned int * tam){
+
+	me->mat = (double**)realloc(me->mat,tam[0]*sizeof(double*));
+
+	for (int i = 0; i < tam[0]; i++)
+	{
+		me->mat[i] = (double *) realloc(me->mat[i],tam[1]*sizeof(double));
+		for ( j = me->tam[1] - 1; j < tam[1]; j++)
+		{
+			me->mat[i][j] = 0.0;
+		}
+		
+	}
+	
+	
+	return me;
+}
+
+static Matriz_pt AcrescentaLinha (Matriz_t * me){
+	me->tam[0] = me->tam[0]+1;
+	me->mat = (double**)realloc(me->mat,me->tam[0]*sizeof(double*));
+	return me;
+}
+
+static Matriz_pt AcrescentaColuna (Matriz_t * me){
+	for (int i = 0; i < me->tam[0]; i++)
+	{
+		me->mat[i] = (double*)realloc(me->mat[i],(me->tam[1]+1)*sizeof(double));
+		for ( j = me->tam[1] - 1; j < me->tam[1]; j++)
+		{
+			me->mat[i][j] = 0.0;
+		}
+		
+	}
+
+	return me;
+}
+
+static Matriz_pt ReverseVertical (Matriz_t * me){
+
+	double linha[me->tam[1]];
+
+	int k = 0;
+
+	for (int i = 0; i < me->tam[0]; i++)
+	{
+		k = 0;
+		for (int j = 0; j < me->tam[1]; j++)
+		{
+			linha[k] = me->mat[i][j];
+			k++;
+		}
+		for (int l = me->tam[1]-1 ; l >= 0 ; l--)
+		{
+			for (int j = 0; j < me->tam[1]; j++)
+			{
+				me->mat[i][j] = linha[l]
+			}
+		}		
+	}
+	
+	return me;
 }

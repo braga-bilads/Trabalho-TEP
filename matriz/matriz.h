@@ -68,7 +68,14 @@ struct Matriz_Interface_st {
 
 	void   	   (*set ) (Matriz_t * const me, int posicao[2], double valor);
 
-   
+    GetValores
+	GetTam   
+	
+	Matriz_pt  (Modulo*) (Matriz_t  * me);
+
+	Matriz_pt (MultPorEscalar*) (Matriz_t * me,int a);
+
+	Matriz_pt (Transpor*) (Matriz_t * me);
 
     /*------------------------------------------------------*/
 };

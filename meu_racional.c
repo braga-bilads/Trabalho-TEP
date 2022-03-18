@@ -343,7 +343,7 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 	
 	Set_((MeuRacional_pt)res,num,den);
 
-	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
+	return (Numero_pt)res;
 }
 
 
@@ -393,7 +393,7 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 	
 	Set_((MeuRacional_pt)res,num,den);
 
-	return (Numero_pt) Simplifica_((MeuRacional_pt)res);
+	return (Numero_pt)res;
 }
 
 /*-----------------------------------------------------------------*/
