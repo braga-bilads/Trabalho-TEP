@@ -580,7 +580,7 @@ static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 	
 }
 
-static Matriz_pt Resize_ (Matriz_t * me, unsigned int * tam){
+static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 
 	me->mat = (double**)realloc(me->mat,tam[0]*sizeof(double*));
 
