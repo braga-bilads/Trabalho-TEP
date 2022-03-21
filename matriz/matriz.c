@@ -593,8 +593,9 @@ static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 		}
 		
 	}
-	
-	
+	me->tam[0] = tam[0];
+	me->tam[1] = tam[1];
+
 	return me;
 }
 // Acrescenta Linha
@@ -605,9 +606,11 @@ static Matriz_pt AcrescentaLinha (Matriz_t * me){
 }
 // Acrescenta Coluna
 static Matriz_pt AcrescentaColuna (Matriz_t * me){
+	me->tam[1] = me->tam[1] +1;
+
 	for (int i = 0; i < me->tam[0]; i++)
 	{
-		me->mat[i] = (double*)realloc(me->mat[i],(me->tam[1]+1)*sizeof(double));
+		me->mat[i] = (double*)realloc(me->mat[i],(me->tam[1])*sizeof(double));
 		for ( j = me->tam[1] - 1; j < me->tam[1]; j++)
 		{
 			me->mat[i][j] = 0.0;
@@ -671,4 +674,39 @@ static Matriz_pt ReverseHorizontal (Matriz_t * me){
 	Destroi_(temp);
 
 	return me;
+}
+// Identidade
+static Matriz_pt Identidade (Matriz_t * me, unsigned int * tam){
+	if (tam[0] != tam[1])
+	{
+		printf("ERRO: MATRIZ DEVE SER QUADRADA!!\n");
+		return me;
+	}
+	for (int i = 0; i < tam[0]; i++)
+	{
+		for (int j = 0; j < tam[1]; j++)
+		{
+			me->mat[i][j] = 0.0;
+
+		}
+		
+		me->mat[1][1] = 1.0;
+	}
+	return me;
+}
+// Ones
+static Matriz_pt Ones (Matriz_t * me){
+	for (int i = 0; i < me->tam[1]; i++)
+	{
+		for (int j = 0; j < me->tam[0]; j++)
+		{
+			me->mat[i][j] = 1.0;
+		}
+		
+	}
+	return me;
+}
+//
+static Matriz_pt Transpor_Diag2 (Matriz_t * me){
+	return Transpor_(me);
 }
