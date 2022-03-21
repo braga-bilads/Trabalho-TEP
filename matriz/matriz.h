@@ -58,8 +58,6 @@ struct Matriz_Interface_st {
     Matriz_pt (*ac_divd)	(Matriz_t        * const  me,
 							 Matriz_t const * const outro);
 
-    int			(*compara)	(Matriz_t const * const  me, Matriz_t const * const  outro);
-
     char *      (*imprime)  (Matriz_t const * const  me);
 
     void        (*destroi)  (Matriz_t       *        me);
@@ -68,15 +66,31 @@ struct Matriz_Interface_st {
 
 	void   	   (*set ) (Matriz_t * const me, int posicao[2], double valor);
 
-    GetValores
-	GetTam   
+	double *   	   (*getValores) (Matriz_t * me);
+
+	unsigned int*   (*getTam) (Matriz_t * me);
+
+	Matriz_pt  (*modulo_ ) (Matriz_t  * me);
+
+    Matriz_pt (*transpor_) (Matriz_t * me);
+
+	Matriz_pt (*acrescentaLinha) (Matriz_t * me);	
+
+	Matriz_pt (*acrescentaColuna) (Matriz_t * me);	
+
+	Matriz_pt (*reverseVertical) (Matriz_t * me);	
+
+	Matriz_pt (*reverseHorizontal) (Matriz_t * me);	
+
+	Matriz_pt (*Identidade) (Matriz_t * me, unsigned int * tam);	
+
+	Matriz_pt (*ones) (Matriz_t * me);	
+
+	Matriz_pt (*transpor_Diag2) (Matriz_t * me);
+
+	Matriz_pt (*multPorEscalar) (Matriz_t * me,int a);
 	
-	Matriz_pt  (Modulo*) (Matriz_t  * me);
-
-	Matriz_pt (MultPorEscalar*) (Matriz_t * me,int a);
-
-	Matriz_pt (Transpor*) (Matriz_t * me);
-
+	Matriz_pt (*resize)  (Matriz_t * me, unsigned int * tam);
     /*------------------------------------------------------*/
 };
 

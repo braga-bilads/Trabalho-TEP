@@ -74,10 +74,6 @@ static  Matriz_pt Divd_  ( Matriz_t const * const  me,
 								Matriz_t const * const  outro,
 								Matriz_t       * const  res);
 
-
-static  int	Compara_ 	    (Matriz_t const * const  me,
-							 Matriz_t const * const  outro);
-
 static  char *    Imprime_  (Matriz_t const * const  me);
 
 static  void        Destroi_ (Matriz_t  *   me);
@@ -144,34 +140,33 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
             
 		
     static struct Matriz_Interface_st const interface = {
-        &Copia_,     // ok
-        &Atribui_,   // ok
-        &Soma_,      // ok
-        &Subt_,      // ok
-        &Mult_,      // ok
-        &Divd_,		 //
-		&Ac_Soma_,	 // ok
-		&Ac_Subt_,	 // ok
-		&Ac_Mult_,   // ok
-		&Ac_Divd_,   //  
-        &Compara_,   //
-        &Imprime_,   //
-        &Destroi_,   //
-        &Get_,       // ok
-        &Set_,       // ok
+        &Copia_,    
+        &Atribui_,  
+        &Soma_,     
+        &Subt_,     
+        &Mult_,     
+        &Divd_,		
+		&Ac_Soma_,	
+		&Ac_Subt_,	
+		&Ac_Mult_,  
+		&Ac_Divd_,   
+        &Imprime_,  
+        &Destroi_,  
+        &Get_,      
+        &Set_,      
 		&GetValores_,
 		&GetTam_,     
 		&Modulo_,
 		&Transpor_,
-		&MultPorEscalar,
-		&Resize,
 		&AcrescentaLinha,
 		&AcrescentaColuna,
 		&ReverseVertical,
 		&ReverseHorizontal,
 		&Identidade,
 		&Ones,
-		&Transpor_Diag2
+		&Transpor_Diag2,
+		&MultPorEscalar,
+		&Resize
     };
 
     me->Metodo = &interface;
@@ -204,7 +199,6 @@ static inline double Get_ (Matriz_t  const * const me,static int *posicao);
 {
 	return me->mat[posicao[0]][posicao[1]];
 }
-
 
 static inline void Set_ (Matriz_t * const me,static int *posicao, double valor)
 {
@@ -464,21 +458,6 @@ static  Numero_pt ac_divd_ (Numero_t       * const  me,
 }
 
 /*-----------------------------------------------------------------*/
-static inline
-int Compara_  ( Matriz_t const * const  me,
-				Matriz_t const * const  outro)
-{
-	return ( compara_ ((Numero_t*) me,
-                       (Numero_t*) outro));
-}
-
-static  int	compara_ 	(Numero_t const * const  me,
-                         Numero_t const * const  outro)
-{
-	
-}
-
-/*-----------------------------------------------------------------*/
 static inline char * Imprime_  ( Matriz_t const * const  me)
 {
 	static char * s[4] = "ok\n";
@@ -502,10 +481,6 @@ static  char * imprime_  (Numero_t const * const  me)
 	return r;
 }
 
-
- /*---------------------------------------------*
- * implementação do destrutor                   *
- * ---------------------------------------------*/
  /*-----------------------------------------------------------------*/
 static inline
 void Destroi_  ( Matriz_t  *   me)
@@ -734,4 +709,11 @@ static Matriz_pt Ones (Matriz_t * me){
 //
 static Matriz_pt Transpor_Diag2 (Matriz_t * me){
 	return Transpor_(me);
+}
+
+static  int	compara_ 	(Numero_t const * const  me,
+							 Numero_t const * const  outro)
+{
+	printf("ERRO FUNÇÂO NÂO UTILIZADA PARA MATRIZES\n");
+	return 1;
 }
