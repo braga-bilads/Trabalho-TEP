@@ -55,6 +55,18 @@ static  void destroi_ (Numero_t   *   me);
  * -------------------------------------------------------------------*/
 static  Matriz_pt Copia_ (Matriz_t const * const  me);
 
+static double Get_ (Matriz_t  const * const me,int *posicao);
+
+static void Set_ (Matriz_t * const me, int *posicao, double valor);
+
+static double * GetValores_(Matriz_t * me);
+
+static Matriz_pt MultPorEscalar (Matriz_t * me,int a);
+
+static Matriz_pt Resize (Matriz_t * me, unsigned int * tam);
+
+static  unsigned int* GetTam_(Matriz_t * me);
+
 static  Matriz_pt Atribui_ (Matriz_t const * const  me,
 							     Matriz_t       * const  outro) ;
 
@@ -77,8 +89,6 @@ static  Matriz_pt Divd_  ( Matriz_t const * const  me,
 static  char *    Imprime_  (Matriz_t const * const  me);
 
 static  void        Destroi_ (Matriz_t  *   me);
-
-static  Matriz_pt  Modulo_ (Matriz_t   const * const me);
 
 static  Matriz_pt Ac_Soma_ (Matriz_t       * const  me,
 								 Matriz_t const * const  outro);
@@ -176,10 +186,10 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
 	
 	int k =0;
 
-	me->mat = (double**)malloc(me->mat,tam[0]*sizeof(double*));
+	me->mat = (double**)malloc(tam[0]*sizeof(double*));
 	for (int i = 0; i < me->tam[0]; i++)
 	{
-		me->mat[i] = (double*)malloc(me->mat,tam[1]*sizeof(double));
+		me->mat[i] = (double*)malloc(tam[1]*sizeof(double));
 		for (int j = 0; j < me->tam[1]; j++)
 		{
 			me->mat[i][j] = valores[k];
@@ -195,14 +205,14 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
 
 /*funções basicas de Get e Set*/
 
-static inline double Get_ (Matriz_t  const * const me,static int *posicao);
+static inline double Get_ (Matriz_t  const * const me,int *posicao)
 {
 	return me->mat[posicao[0]][posicao[1]];
 }
 
-static inline void Set_ (Matriz_t * const me,static int *posicao, double valor)
+static inline void Set_ (Matriz_t * const me, int *posicao, double valor)
 {
-	me->mat[posicao[0],posicao[1]] = valor;
+	me->mat[posicao[0]][posicao[1]] = valor;
 }
 
 static inline unsigned int* GetTam_(Matriz_t * me){
@@ -246,7 +256,7 @@ static Numero_pt copia_ (Numero_t const * const  me)
 {
 	assert (me != NULL);
 	Numero_pt outro = NULL;
-	outro = (Numero_pt) Matriz_2D_criar ((Matriz_pt) outro, GetTam_(me),GetValores_(me));
+	outro = (Numero_pt) Matriz_2D_criar ((Matriz_pt) outro, GetTam_((Matriz_t*)me),GetValores_((Matriz_t*)me));
 	return outro;
 }
 
@@ -261,19 +271,21 @@ static inline Matriz_pt Atribui_(Matriz_t const * const me,
 
 static Numero_pt atribui_ (Numero_t const * const  me, Numero_t * const  outro)
 {
-	outro->tam[0] = me->tam[0];
-	outro->tam[1] = me->tam[1];
-	outro->mat = (double**)realloc(outro->mat,me->tam[0]*sizeof(double*));
-	for (int i = 0; i < me->tam[0]; i++)
+
+	Resize((Matriz_t*)outro,GetTam_((Matriz_t*)me));
+	unsigned int *tam = GetTam_((Matriz_t*)me);
+	for (int i = 0; i < tam[0]; i++)
 	{
-		outro->mat[i] = (double*)realloc(outro->mat,me->tam[0]*sizeof(double));
-		for (int j = 0; j < me->tam[1]; j++)
+		for (int j = 0; j < tam[1]; j++)
 		{
-			outro->mat[i][j] = me->mat[i][j];
+			int pos[2];
+			pos[0] = i;
+			pos[1] = j;
+			Set_((Matriz_t*)outro,pos,Get_((Matriz_t * )me,pos));
 		}
 		
 	}
-
+	
 	return (Numero_pt) outro;
 }
 /*-----------------------------------------------------------------*/
@@ -291,19 +303,26 @@ static  Numero_pt soma_  ( Numero_t const * const  me,
 						   Numero_t const * const  outro,
 						   Numero_t       * const  res)
 {
-	if(me->tam[0] != outro->tam[0] || me->tam[1] != outro->tam[1] || 
-	   me->tam[0] != res->tam[0]   || me->tam[1] != res->tam[1]    )
+	unsigned int *tamMe = GetTam_((Matriz_t*)me);
+	unsigned int *tamOu = GetTam_((Matriz_t*)outro);
+	unsigned int *tamRes = GetTam_((Matriz_t*)res);
+	if(tamMe[0] != tamOu[0] || tamMe[1] != tamOu[1] || 
+	   tamMe[0] != tamRes[0]|| tamMe[1] != tamRes[1] )
 	{
 		printf("ERRO NA SOMA: AS MATRIZES PRECISAM TER O MESMO NUMERO DE LINHAS E COLUNAS\n");
 		return(res);
 	}
-	for (int i = 0; i < me->tam[0]; i++)
+	for (int i = 0; i < tamMe[0]; i++)
 	{
-		for (int j = 0; j < me->tam[1]; j++)
+		for (int j = 0; j < tamMe[1]; j++)
 		{
-			Set_((Matriz_t *)res,[i,j],me->mat[i][j] + outro[i][j]);
+			int pos[2];
+			pos[0] = i;
+			pos[1] = j;
+			Set_((Matriz_t *)res,pos,Get_((Matriz_t *) me,pos) + Get_((Matriz_t *) outro,pos));
 		}
 	}
+	return (Numero_t *) res;
 }
 
 
@@ -322,20 +341,28 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 								    Numero_t const * const  outro,
 								    Numero_t       * const  res)
 {	
-	if(me->tam[0] != outro->tam[0] || me->tam[1] != outro->tam[1] || 
-	   me->tam[0] != res->tam[0]   || me->tam[1] != res->tam[1]    )
+	unsigned int *tamMe = GetTam_((Matriz_t*)me);
+	unsigned int *tamOu = GetTam_((Matriz_t*)outro);
+	unsigned int *tamRes = GetTam_((Matriz_t*)res);
+	if(tamMe[0] != tamOu[0] || tamMe[1] != tamOu[1] || 
+	   tamMe[0] != tamRes[0]|| tamMe[1] != tamRes[1] )
 	{
 		printf("ERRO NA SOMA: AS MATRIZES PRECISAM TER O MESMO NUMERO DE LINHAS E COLUNAS\n");
 		return(res);
 	}
-	for (int i = 0; i < me->tam[0]; i++)
+	for (int i = 0; i < tamMe[0]; i++)
 	{
-		for (int j = 0; j < me->tam[1]; j++)
+		for (int j = 0; j < tamMe[1]; j++)
 		{
-			Set_((Matriz_t *)res,[i,j],me->mat[i][j] - outro[i][j]);
+			int pos[2];
+			pos[0] = i;
+			pos[1] = j;
+			Set_((Matriz_t *)res,pos,Get_((Matriz_t *) me,pos) - Get_((Matriz_t *) outro,pos));
 		}
 	}
+	return (Numero_t *) res;
 }
+
 
 /*-----------------------------------------------------------------*/
 static inline
@@ -353,24 +380,38 @@ static  Numero_pt mult_  ( Numero_t const * const  me,
 						   Numero_t const * const  outro,
 						   Numero_t       * const  res)
 {
-    if (me->tam[0] != outro->tam[1] || me->tam[0] != res->tam[0] || outro->tam[1] != res->tam[1])
+	unsigned int *tamMe = GetTam_((Matriz_t*)me);
+	unsigned int *tamOu = GetTam_((Matriz_t*)outro);
+	unsigned int *tamRes = GetTam_((Matriz_t*)res);
+
+    if (tamMe[0] != tamOu[1] || tamMe[0] != tamRes[0] || tamOu[1] != tamRes[1])
 	{
 		printf("ERRO: MATRIZES NÂO COMPATIVEIS\n");
 		return res;
 	}
-	for(int linha=0; linha < me->tam[0] ; linha++){
+	for(int linha=0; linha < tamMe[0] ; linha++){
     	
-		for(int coluna=0; coluna < M2C; coluna++){
+		for(int coluna=0; coluna < tamOu[1] ; coluna++){
       		
-			int somapro=0;
+			double somapro=0.0;
       		
-			for(int i=0; i<me->tam[0] ; i++) {
+			for(int i=0; i<tamMe[0] ; i++) {
+				int pos1[2];
+				pos1[0] = linha;
+				pos1[1] = i;
+				int pos2[2];
+				pos2[1] = coluna;
+				pos2[0] = i;
 
-				somapro += Get_(me,[linha,i]) * Get_(outro,[i,coluna]);
+				somapro += Get_((Matriz_t*)me,pos1) * Get_((Matriz_t*)outro,pos2);
 
 			}
       		
-			Set_((Matriz_t *)res,[linha,coluna],somapro);
+			int pos3[2];
+			pos3[1] = coluna;
+			pos3[0] = linha;
+
+			Set_((Matriz_t *)res,pos3,somapro);
     	}
 	}
 
@@ -460,20 +501,24 @@ static  Numero_pt ac_divd_ (Numero_t       * const  me,
 /*-----------------------------------------------------------------*/
 static inline char * Imprime_  ( Matriz_t const * const  me)
 {
-	static char * s[4] = "ok\n";
+	static char s[4] = "ok\n";
 	imprime_((Numero_t *) me);
 	return s;
 }
 static  char * imprime_  (Numero_t const * const  me)
 {
-	static char * r[4] = "ok\n";
+	unsigned int *tamMe = GetTam_((Matriz_t*)me);
+	static char r[4] = "ok\n";
 
-	for (int i = 0; i < me->tam[0]; i++)
+	for (int i = 0; i < tamMe[0]; i++)
 	{
 		printf("|");
-		for (int j = 0; j< me->tam[1]; j++)
+		for (int j = 0; j< tamMe[1]; j++)
 		{
-			printf("%.02lf ", me->mat[i][j]);
+			int pos1[2];
+			pos1[0] = i;
+			pos1[1] = j;
+			printf("%.02lf ", Get_((Matriz_t*)me,pos1));
 		}
 		printf("|\n");
 	}
@@ -485,24 +530,17 @@ static  char * imprime_  (Numero_t const * const  me)
 static inline
 void Destroi_  ( Matriz_t  *   me)
 {
-	  destroi_ ((Numero_t *)  me);
+	for (int i = 0; i < me->tam[0]; i++){
+		free(me->mat[i]);
+	}
+
+	destroi_ ((Numero_t *)  me);
 
 }
 
 static void destroi_ (Numero_t *  me)
 {
-	
-	for (int i = 0; i < me->tam[0]; i++){
-
-		for (int j = 0; j < me->tam[1]; j++){
-	
-			free(me->mat[i][j]);
-		}
-		free(me->mat[i]);
-	}
-
-
-	free(me->tam); 
+	free(me);
 }
  /*-----------------------------------------------------------------*/
 /*Modulo (deixa a matriz com todos as posições > 0)*/
@@ -512,7 +550,10 @@ static Matriz_pt  Modulo_ (Matriz_t  * me)
    {
 	   for (int j = 0; j < me->tam[1]; j++)
 	   {
-		   Set_(me,[i,j],fabs(Get_(me),[i,j]));
+		   int pos[2];
+		   pos[0] = i;
+		   pos[1] = j;
+		   Set_(me,pos,fabs(Get_(me,pos)));
 	   }
 	   
    }
@@ -528,9 +569,9 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 		{
 			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
 
-			for ( j = 0; j < tamcolunas0; j++)
+			for ( int j = 0; j < tamcolunas0; j++)
 			{
-				for ( i = 0; i < tamlinhas0; i++)
+				for (int  i = 0; i < tamlinhas0; i++)
 				{
 					me->mat[j][i] = me->mat[i][j];
 				}
@@ -540,25 +581,25 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 
 			for (int i = 0; i < tamlinhas0; i++)
 			{
-				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double))
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
 			}
 		}
 		else{
 			for (int i = 0; i < tamlinhas0; i++)
 			{
-				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double))
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
 			}
 			
-			for ( j = 0; j < tamlinhas0; j++)
+			for (int  j = 0; j < tamlinhas0; j++)
 			{
-				for ( i = 0; i < tamcolunas0; i++)
+				for ( int i = 0; i < tamcolunas0; i++)
 				{
 					me->mat[j][i] = me->mat[i][j];
 				}
 
 			}
 
-			me->mat = (double**)realloc(me->mat,colunas0*sizeof(double*));
+			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
 		} 
 	}
 
@@ -571,13 +612,16 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
-		for (j = 0; j < me->tam[1]; j++)
+		for (int j = 0; j < me->tam[1]; j++)
 		{
-			Set_(me,[i,j],Get_(me,[i,j])* a);
+			int pos[2];
+			pos[0] = i;
+			pos[1] = j;
+			Set_(me,pos,Get_(me,pos)* a);
 		}
 		
 	}
-	
+	return me;
 }
 //Resize matriz
 static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
@@ -587,7 +631,7 @@ static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 	for (int i = 0; i < tam[0]; i++)
 	{
 		me->mat[i] = (double *) realloc(me->mat[i],tam[1]*sizeof(double));
-		for ( j = me->tam[1] - 1; j < tam[1]; j++)
+		for (int j = me->tam[1] - 1; j < tam[1]; j++)
 		{
 			me->mat[i][j] = 0.0;
 		}
@@ -611,7 +655,7 @@ static Matriz_pt AcrescentaColuna (Matriz_t * me){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
 		me->mat[i] = (double*)realloc(me->mat[i],(me->tam[1])*sizeof(double));
-		for ( j = me->tam[1] - 1; j < me->tam[1]; j++)
+		for (int j = me->tam[1] - 1; j < me->tam[1]; j++)
 		{
 			me->mat[i][j] = 0.0;
 		}
@@ -639,7 +683,7 @@ static Matriz_pt ReverseVertical (Matriz_t * me){
 		{
 			for (int j = 0; j < me->tam[1]; j++)
 			{
-				me->mat[i][j] = linha[l]
+				me->mat[i][j] = linha[l];
 			}
 		}		
 	}
@@ -649,7 +693,7 @@ static Matriz_pt ReverseVertical (Matriz_t * me){
 // Reverse Horizontal (Linhas)
 static Matriz_pt ReverseHorizontal (Matriz_t * me){
 
-	Matriz_pt temp;
+	static Matriz_pt temp;
 	
 	Matriz_2D_criar(temp,me->tam,GetValores_(me));
 
