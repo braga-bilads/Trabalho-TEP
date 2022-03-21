@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "meu_complexo.h"
 #include "meu_racional.h"
+#include "matriz.h"
 
 int main()
 {
@@ -139,11 +140,34 @@ int main()
       printf("Y2 eh menor que Y3 \n");
    }
 
+   ptR1 = ptR1->Metodo->simplifica(ptR1);
+   ptR2 = ptR2->Metodo->simplifica(ptR2);
+   ptR3 = ptR3->Metodo->simplifica(ptR3);
+
+   printf("ptR1 foi simplificado = %s \n",ptR1->Metodo->imprime(ptR1));   
+   printf("ptR2 foi simplificado = %s \n",ptR2->Metodo->imprime(ptR2));
+   printf("ptR3 foi simplificado = %s \n",ptR3->Metodo->imprime(ptR3));
+
    ptR1->Metodo->destroi(ptR1);
    ptR2->Metodo->destroi(ptR2);
    ptR3->Metodo->destroi(ptR3);
 
    /*  Parte MATRIZ   */
+     printf("\n\nPARTE Da Matriz:\n\n");
+   Matriz_pt ptM1 =NULL, ptM2 = NULL, ptM3 = NULL;
+   unsigned int tam[2];
+   tam[0] = 3;
+   tam[1] = 3;
+   
+   double valores[9] = [2,1,3,4,5,6,4,3,2];
+
+   ptM1 = Matriz_2D_criar(ptM1,tam,)
+
+   ptM2 = ptM1->Metodo->copia(ptM1);
+
+   printf("as duas matrizes sao \n");
+   ptM1->Metodo->imprime(ptR1);
+   ptR2->Metodo->imprime(ptR2);
 
    return (0);
 }
