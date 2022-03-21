@@ -567,7 +567,7 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 
 	return me;
 }
-//
+//Multiplica por Escalar
 static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
@@ -579,7 +579,7 @@ static Matriz_pt MultPorEscalar (Matriz_t * me,int a){
 	}
 	
 }
-
+//Resize matriz
 static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 
 	me->mat = (double**)realloc(me->mat,tam[0]*sizeof(double*));
@@ -597,13 +597,13 @@ static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 	
 	return me;
 }
-
+// Acrescenta Linha
 static Matriz_pt AcrescentaLinha (Matriz_t * me){
 	me->tam[0] = me->tam[0]+1;
 	me->mat = (double**)realloc(me->mat,me->tam[0]*sizeof(double*));
 	return me;
 }
-
+// Acrescenta Coluna
 static Matriz_pt AcrescentaColuna (Matriz_t * me){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
@@ -617,7 +617,7 @@ static Matriz_pt AcrescentaColuna (Matriz_t * me){
 
 	return me;
 }
-
+// Reverse Vertical (Colunas)
 static Matriz_pt ReverseVertical (Matriz_t * me){
 
 	double linha[me->tam[1]];
@@ -641,5 +641,34 @@ static Matriz_pt ReverseVertical (Matriz_t * me){
 		}		
 	}
 	
+	return me;
+}
+// Reverse Horizontal (Linhas)
+static Matriz_pt ReverseHorizontal (Matriz_t * me){
+
+	Matriz_pt temp;
+	
+	Matriz_2D_criar(temp,me->tam,GetValores_(me));
+
+
+	for (int i = me->tam[0] -1; i >= 0; i--)
+	{
+		for (int j = me->tam[1]-1; j >= 0 ; j--)
+		{
+			for (int l = 0; l < me->tam[0]; l++)
+			{
+				for (int m = 0; m < me->tam[1]; m++)
+				{
+					
+					me->mat[l][m] = temp->mat[i][j];
+
+				}
+			}
+		}
+	}
+
+
+	Destroi_(temp);
+
 	return me;
 }
