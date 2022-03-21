@@ -360,7 +360,7 @@ static  Numero_pt subt_  (	Numero_t const * const  me,
 			Set_((Matriz_t *)res,pos,Get_((Matriz_t *) me,pos) - Get_((Matriz_t *) outro,pos));
 		}
 	}
-	return (Numero_t *) res;
+	return res;
 }
 
 
@@ -569,16 +569,6 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 		{
 			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
 
-			for ( int j = 0; j < tamcolunas0; j++)
-			{
-				for (int  i = 0; i < tamlinhas0; i++)
-				{
-					me->mat[j][i] = me->mat[i][j];
-				}
-
-			}
-			
-
 			for (int i = 0; i < tamlinhas0; i++)
 			{
 				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
@@ -590,22 +580,23 @@ static Matriz_pt Transpor_ (Matriz_t * me){
 				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
 			}
 			
-			for (int  j = 0; j < tamlinhas0; j++)
-			{
-				for ( int i = 0; i < tamcolunas0; i++)
-				{
-					me->mat[j][i] = me->mat[i][j];
-				}
-
-			}
-
 			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
 		} 
 	}
 
 	me->tam[0] = tamcolunas0;
 	me->tam[1] = tamlinhas0;
+	Matriz_pt temp;
+	temp = Copia_(me);
+	for ( int i = 0; i < tamlinhas0; i++)
+	{
+		for (int  j = 0; j < tamcolunas0; j++)
+		{
+			me->mat[i][j] = temp->mat[j][i];
+		}
 
+	}
+	Destroi_(temp);
 	return me;
 }
 //Multiplica por Escalar
@@ -734,7 +725,7 @@ static Matriz_pt Identidade (Matriz_t * me, unsigned int * tam){
 
 		}
 		
-		me->mat[1][1] = 1.0;
+		me->mat[i][i] = 1.0;
 	}
 	return me;
 }
@@ -752,7 +743,50 @@ static Matriz_pt Ones (Matriz_t * me){
 }
 //
 static Matriz_pt Transpor_Diag2 (Matriz_t * me){
-	return Transpor_(me);
+	unsigned int tamlinhas0 = me->tam[0];
+	unsigned int tamcolunas0 = me->tam[1];
+
+	if(tamcolunas0 != tamlinhas0){
+		if (tamlinhas0 < tamcolunas0)
+		{
+			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
+
+			for (int i = 0; i < tamlinhas0; i++)
+			{
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
+			}
+		}
+		else{
+			for (int i = 0; i < tamlinhas0; i++)
+			{
+				me->mat[i] = (double *) realloc(me->mat[i],tamlinhas0*sizeof(double));
+			}
+			
+			me->mat = (double**)realloc(me->mat,tamcolunas0*sizeof(double*));
+		} 
+	}
+
+	me->tam[0] = tamcolunas0;
+	me->tam[1] = tamlinhas0;
+	Matriz_pt temp;
+	temp = Copia_(me);
+	int l = 0; 
+	int m = 0;
+	for ( int i = tamlinhas0-1; i>=0; i--)
+	{
+		m=0;
+		for (int  j = tamcolunas0-1; j >=0; j--)
+		{
+		
+			me->mat[i][j] = temp->mat[m][l];
+			
+			m++;
+		
+		}
+		l++;
+	}
+	Destroi_(temp);
+	return me;
 }
 
 static  int	compara_ 	(Numero_t const * const  me,

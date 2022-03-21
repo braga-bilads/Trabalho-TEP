@@ -82,7 +82,7 @@ struct Matriz_Interface_st {
 
 	Matriz_pt (*reverseHorizontal) (Matriz_t * me);	
 
-	Matriz_pt (*Identidade) (Matriz_t * me, unsigned int * tam);	
+	Matriz_pt (*identidade) (Matriz_t * me, unsigned int * tam);	
 
 	Matriz_pt (*ones) (Matriz_t * me);	
 

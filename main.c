@@ -158,16 +158,73 @@ int main()
    unsigned int tam[2];
    tam[0] = 3;
    tam[1] = 3;
-   
-   double valores[9] = [2,1,3,4,5,6,4,3,2];
 
-   ptM1 = Matriz_2D_criar(ptM1,tam,)
+   double valores[9] = {2,1,3,4,5,6,4,3,2};
+
+   ptM1 = Matriz_2D_criar(ptM1,tam,valores);
 
    ptM2 = ptM1->Metodo->copia(ptM1);
 
-   printf("as duas matrizes sao \n");
-   ptM1->Metodo->imprime(ptR1);
-   ptR2->Metodo->imprime(ptR2);
+   printf("as duas matrizes sao \n\n");
+   ptM1->Metodo->imprime(ptM1);
+   printf("\n");
+   ptM2->Metodo->imprime(ptM2);
+   printf("\n");
+
+   ptM3 = Matriz_2D_criar(ptM3,tam,valores);
+   ptM3 = ptM2->Metodo->atribui(ptM2, ptM3);
+   printf("ptM3 recebeu o valor de ptM2\n");
+   ptM3->Metodo->imprime(ptM3);
+
+   printf("\n");
+   ptM3 = ptM1->Metodo->soma(ptM1, ptM2, ptM3);
+   printf("ptM3 recebeu a soma de M1 com M2 \n");
+   ptM3->Metodo->imprime(ptM3);   
+   
+   printf("\n");
+   ptM3 = ptM3->Metodo->ac_subt(ptM3, ptM1);
+   printf("ptM3 recebeu a subtracao de M3 com M1 \n");
+   ptM3->Metodo->imprime(ptM3);
+   printf("\n");
+
+   ptM3 = ptM1->Metodo->mult(ptM1, ptM2, ptM3);
+   printf("ptM3 recebeu a multiplicacao de M1 com M2\n");
+   ptM3->Metodo->imprime(ptM3);
+
+   printf("\n");
+   ptM3 = ptM1->Metodo->divd(ptM1, ptM2, ptM3);
+   printf("ptM3 recebeu a divisão de M1 com M2\n");
+   ptM3->Metodo->imprime(ptM3);
+
+   printf("\n");
+   printf("Transpondo M3 pela diagonal secundaria\n");
+   ptM3 = ptM3->Metodo->transpor_Diag2(ptM3);
+   ptM3->Metodo->imprime(ptM3); 
+   printf("\n");
+   
+   printf("\n");
+   ptM3 = ptM3->Metodo->multPorEscalar(ptM3,2);
+   printf("ptM3 recebeu a multiplicacao de M3 por 2\n");
+   ptM3->Metodo->imprime(ptM3);
+   printf("\n");
+
+   printf("\n");
+   ptM3 = ptM3->Metodo->identidade(ptM3, ptM3->tam);
+   printf("M3 virou identidade\n");
+   ptM3->Metodo->imprime(ptM3);
+   printf("\n");
+
+   printf("\n");
+   ptM3 = ptM3->Metodo->ones(ptM3);
+   printf("M3 virou matriz de 1s\n");
+   ptM3->Metodo->imprime(ptM3);
+   printf("\n");
+
+   printf("\n");
+   ptM2 = ptM2->Metodo->reverseVertical(ptM2);
+   ptM2->Metodo->imprime(ptM2);
+   printf("\n");
+
 
    return (0);
 }
