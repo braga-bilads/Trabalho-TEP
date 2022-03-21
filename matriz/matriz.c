@@ -78,19 +78,9 @@ static  Matriz_pt Divd_  ( Matriz_t const * const  me,
 static  int	Compara_ 	    (Matriz_t const * const  me,
 							 Matriz_t const * const  outro);
 
-static  char *      Imprime_  (Matriz_t const * const  me);
+static  char *    Imprime_  (Matriz_t const * const  me);
 
 static  void        Destroi_ (Matriz_t  *   me);
-
-static  Matriz_pt  Simplifica_ (Matriz_pt me);
-
-
-static  double Get_ (Matriz_t  const * const me,static int *posicao)
-
-static 	void     Set_ (Matriz_t   * const me,
-					 long int valorNum,
-					 long int valorDen);
-
 
 static  Matriz_pt  Modulo_ (Matriz_t   const * const me);
 
@@ -106,6 +96,23 @@ static  Matriz_pt Ac_Mult_ (Matriz_t       * const  me,
 static  Matriz_pt Ac_Divd_ (Matriz_t       * const  me,
 								 Matriz_t const * const  outro);
 
+static Matriz_pt  Modulo_ (Matriz_t  * me);
+
+static Matriz_pt Transpor_ (Matriz_t * me);
+
+static Matriz_pt AcrescentaLinha (Matriz_t * me);
+
+static Matriz_pt AcrescentaColuna (Matriz_t * me);
+
+static Matriz_pt ReverseVertical (Matriz_t * me);
+
+static Matriz_pt ReverseHorizontal (Matriz_t * me);
+
+static Matriz_pt Identidade (Matriz_t * me, unsigned int * tam);
+
+static Matriz_pt Ones (Matriz_t * me);
+
+static Matriz_pt Transpor_Diag2 (Matriz_t * me);
  /*---------------------------------------------*
  * 		implementação do construtor             *
  * ---------------------------------------------*/
@@ -155,8 +162,16 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
 		&GetValores_,
 		&GetTam_,     
 		&Modulo_,
+		&Transpor_,
 		&MultPorEscalar,
-		&Transpor_
+		&Resize,
+		&AcrescentaLinha,
+		&AcrescentaColuna,
+		&ReverseVertical,
+		&ReverseHorizontal,
+		&Identidade,
+		&Ones,
+		&Transpor_Diag2
     };
 
     me->Metodo = &interface;
@@ -466,15 +481,25 @@ static  int	compara_ 	(Numero_t const * const  me,
 /*-----------------------------------------------------------------*/
 static inline char * Imprime_  ( Matriz_t const * const  me)
 {
-	return ( imprime_ ((Numero_t*) me));
+	static char * s[4] = "ok\n";
+	imprime_((Numero_t *) me);
+	return s;
 }
 static  char * imprime_  (Numero_t const * const  me)
 {
-    static char buffer[50];
-	buffer[0] = '\n';
-    
-	
-	return buffer;
+	static char * r[4] = "ok\n";
+
+	for (int i = 0; i < me->tam[0]; i++)
+	{
+		printf("|");
+		for (int j = 0; j< me->tam[1]; j++)
+		{
+			printf("%.02lf ", me->mat[i][j]);
+		}
+		printf("|\n");
+	}
+
+	return r;
 }
 
 
