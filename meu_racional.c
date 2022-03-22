@@ -124,10 +124,7 @@ static  MeuRacional_pt Ac_Divd_ (MeuRacional_t       * const  me,
  * ---------------------------------------------*/
 MeuRacional_pt Racional_constroi (MeuRacional_pt  me, long int valorNum,long int valorDen)
 {
-	/* tabela de funções virtuais da classe Numero_t *
-	 * Esta tabela estática será compartilhada por todos os números *
-	 * da classe MeuRacional_t                                        */
-
+	me = (MeuRacional_pt) malloc(sizeof(MeuRacional_t));
     static struct NumeroVtbl const vtbl = {
         &copia_,   //ok
         &atribui_, //ok

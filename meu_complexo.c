@@ -193,6 +193,7 @@ MeuComplexo_pt Complexo_constroi (MeuComplexo_pt  me,
 							      double valorReal,
 							      double valorImag)
 {
+	me = (MeuComplexo_pt) malloc(sizeof(MeuComplexo_t));
 	/* tabela de funções virtuais da classe Numero_t *
 	 * Esta tabela estática será compartilhada por todos os números *
 	 * da classe MeuComplexo_t                                        */
@@ -213,7 +214,7 @@ MeuComplexo_pt Complexo_constroi (MeuComplexo_pt  me,
         &destroi_
      };
 
-         me = (MeuComplexo_pt) Num_constroi ((Numero_pt) me);
+         
                         /*constroi o Numero_t  */
                         /* no início de MeuComplexo_t  */
 

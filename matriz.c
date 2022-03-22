@@ -124,7 +124,8 @@ static Matriz_pt Transpor_Diag2 (Matriz_t * me);
  * ---------------------------------------------*/
 Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
 {
-	                                
+    me = (Matriz_pt) malloc(sizeof(Matriz_t));
+                       
 
     static struct NumeroVtbl const vtbl = {
         &copia_,   //
@@ -142,10 +143,7 @@ Matriz_pt Matriz_2D_criar (Matriz_pt  me,unsigned int* tam,double *valores)
         &destroi_  //
      };
 
-        me = (Matriz_pt) Num_constroi ((Numero_pt) me);
-                        	/*constroi o Numero_t  */
-                        /* no início de Matriz_t  */
-
+        
         me->super.metodo = &vtbl;
             
 		
@@ -622,7 +620,7 @@ static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 	for (int i = 0; i < tam[0]; i++)
 	{
 		me->mat[i] = (double *) realloc(me->mat[i],tam[1]*sizeof(double));
-		for (int j = me->tam[1] - 1; j < tam[1]; j++)
+		for (int j = tam[1] - 1; j < tam[1]; j++)
 		{
 			me->mat[i][j] = 0.0;
 		}
@@ -635,24 +633,24 @@ static Matriz_pt Resize (Matriz_t * me, unsigned int * tam){
 }
 // Acrescenta Linha
 static Matriz_pt AcrescentaLinha (Matriz_t * me){
-	me->tam[0] = me->tam[0]+1;
-	me->mat = (double**)realloc(me->mat,me->tam[0]*sizeof(double*));
+	static unsigned int * tam;
+	tam = malloc(2*sizeof(int));
+	tam[0] = me->tam[0] +1;
+	tam[1] = me->tam[1] ;
+	
+	
+	me = Resize(me, tam);
 	return me;
 }
 // Acrescenta Coluna
 static Matriz_pt AcrescentaColuna (Matriz_t * me){
-	me->tam[1] = me->tam[1] +1;
-
-	for (int i = 0; i < me->tam[0]; i++)
-	{
-		me->mat[i] = (double*)realloc(me->mat[i],(me->tam[1])*sizeof(double));
-		for (int j = me->tam[1] - 1; j < me->tam[1]; j++)
-		{
-			me->mat[i][j] = 0.0;
-		}
-		
-	}
-
+	static unsigned int * tam;
+	tam = malloc(2*sizeof(int));
+	tam[0] = me->tam[0];
+	tam[1] = me->tam[1] + 1;
+	
+	
+	me = Resize(me, tam);
 	return me;
 }
 // Reverse Vertical (Colunas)
@@ -665,17 +663,18 @@ static Matriz_pt ReverseVertical (Matriz_t * me){
 	for (int i = 0; i < me->tam[0]; i++)
 	{
 		k = 0;
-		for (int j = 0; j < me->tam[1]; j++)
+		int j=0;
+		for (j = 0; j < me->tam[1]; j++)
 		{
 			linha[k] = me->mat[i][j];
 			k++;
 		}
-		for (int l = me->tam[1]-1 ; l >= 0 ; l--)
+		
+		for (int l = me->tam[1]-1,j = 0 ; l >= 0 ; l--, j++)
 		{
-			for (int j = 0; j < me->tam[1]; j++)
-			{
-				me->mat[i][j] = linha[l];
-			}
+
+			me->mat[i][j] = linha[l];
+			
 		}		
 	}
 	
@@ -684,25 +683,19 @@ static Matriz_pt ReverseVertical (Matriz_t * me){
 // Reverse Horizontal (Linhas)
 static Matriz_pt ReverseHorizontal (Matriz_t * me){
 
-	static Matriz_pt temp;
-	
-	Matriz_2D_criar(temp,me->tam,GetValores_(me));
+	Matriz_pt temp;
+	temp = Copia_(me);
 
-
+	int l = 0, m =0;
 	for (int i = me->tam[0] -1; i >= 0; i--)
 	{
-		for (int j = me->tam[1]-1; j >= 0 ; j--)
-		{
-			for (int l = 0; l < me->tam[0]; l++)
-			{
-				for (int m = 0; m < me->tam[1]; m++)
-				{
-					
-					me->mat[l][m] = temp->mat[i][j];
-
-				}
-			}
+		m = 0;
+		for (int j = 0; j < me->tam[1] ; j++)
+		{		
+			me->mat[l][m] = temp->mat[i][j];
+			m++;
 		}
+		l++;
 	}
 
 

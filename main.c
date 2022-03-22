@@ -220,9 +220,24 @@ int main()
    ptM3->Metodo->imprime(ptM3);
    printf("\n");
 
-   printf("\n");
+   printf("M2:\n");
+   ptM2->Metodo->imprime(ptM2);
+   printf("\nM2 reverse vertical:\n");
    ptM2 = ptM2->Metodo->reverseVertical(ptM2);
    ptM2->Metodo->imprime(ptM2);
+   printf("\n");
+
+   printf("M1:\n");
+   ptM1->Metodo->imprime(ptM1);
+   printf("\nM1 reverse horizontal:\n");
+   ptM1 = ptM1->Metodo->reverseHorizontal(ptM1);
+   ptM1->Metodo->imprime(ptM1);
+   printf("\n");
+  
+   printf("\nM1 Adiciona linha e coluna:\n");
+   ptM1 = ptM1->Metodo->acrescentaColuna(ptM1);
+   ptM1 = ptM1->Metodo->acrescentaLinha(ptM1);
+   ptM1->Metodo->imprime(ptM1);
    printf("\n");
 
 
